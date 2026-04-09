@@ -46,7 +46,6 @@ src/
 ### 🔐 Segurança (Firebase Security Rules)
 Não dependa apenas da lógica do frontend. Configure as regras no console do Firebase:
 * **Posts:** Permita `read` para todos e `write` apenas para o proprietário/admin.
-* **Imagens:** Restrinja o upload no Storage apenas para usuários autenticados.
 
 ### 📝 Edição de Conteúdo
 * **Formato:** O uso de **Markdown** é recomendado pela leveza e facilidade de armazenamento.
@@ -54,7 +53,7 @@ Não dependa apenas da lógica do frontend. Configure as regras no console do Fi
 
 ### ⚡ Performance e Estado
 * **Real-time:** Use `onSnapshot` do Firebase para atualizações automáticas na lista de posts sem refresh.
-* **Imagens:** Integre o **Firebase Storage** para hospedar as capas dos posts e fotos de perfil.
+* **Imagens:** Utilize URLs externas para as capas dos posts e fotos de perfil.
 
 ---
 

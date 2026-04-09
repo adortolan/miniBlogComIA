@@ -22,7 +22,6 @@ Inicializar o projeto React com Vite e instalar todas as dependências necessár
   - `VITE_FIREBASE_API_KEY`
   - `VITE_FIREBASE_AUTH_DOMAIN`
   - `VITE_FIREBASE_PROJECT_ID`
-  - `VITE_FIREBASE_STORAGE_BUCKET`
   - `VITE_FIREBASE_MESSAGING_SENDER_ID`
   - `VITE_FIREBASE_APP_ID`
 - Adicionar `.env.local` ao `.gitignore`
@@ -30,7 +29,7 @@ Inicializar o projeto React com Vite e instalar todas as dependências necessár
 ### Etapa 4 — Criar arquivo de configuração do Firebase
 - Criar `src/config/firebase.js`
 - Importar e inicializar o Firebase App com as variáveis de ambiente
-- Exportar instâncias de `auth`, `db` (Firestore) e `storage`
+- Exportar instâncias de `auth` e `db` (Firestore)
 
 ### Etapa 5 — Organizar estrutura de pastas
 - Criar pastas dentro de `src/`:

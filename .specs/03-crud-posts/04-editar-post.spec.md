@@ -7,7 +7,6 @@ Implementar a funcionalidade de edição de posts existentes com pré-carregamen
 - 2.5 Proteção de Rotas
 - 4.4 PostForm
 - 7.1 postService
-- 7.3 storageService
 
 ## Etapas
 
@@ -29,17 +28,17 @@ Implementar a funcionalidade de edição de posts existentes com pré-carregamen
 
 ### Etapa 4 — Reutilizar PostForm
 - Usar componente `PostForm` com prop `initialData` preenchida
-- Campos editáveis: `title`, `content`, `tags`, imagem de capa
-- Exibir imagem de capa atual com opção de trocar
+- Campos editáveis: `title`, `content`, `tags`, `imageURL`
+- Exibir preview da imagem de capa atual (se houver URL)
 
 ### Etapa 5 — Atualizar slug se título mudar
 - Se o título for alterado, regenerar slug
 - Verificar unicidade do novo slug (excluindo o post atual)
 
-### Etapa 6 — Atualizar imagem de capa
-- Se nova imagem for selecionada:
-  - Deletar imagem anterior do Storage (se existir)
-  - Fazer upload da nova imagem
+### Etapa 6 — Atualizar URL da imagem de capa
+- Se nova URL for inserida:
+  - Validar se é uma URL válida
+  - Exibir preview da nova imagem
   - Atualizar `imageURL` do post
 
 ### Etapa 7 — Salvar alterações
@@ -52,7 +51,7 @@ Implementar a funcionalidade de edição de posts existentes com pré-carregamen
 - [ ] Formulário é pré-preenchido com dados atuais do post
 - [ ] Apenas autor ou admin consegue acessar a página de edição
 - [ ] Slug é atualizado caso o título mude
-- [ ] Imagem de capa pode ser substituída
+- [ ] URL da imagem de capa pode ser substituída
 - [ ] Post é atualizado corretamente no Firestore
 - [ ] Após edição, usuário é redirecionado para o post atualizado
 - [ ] Validação dos campos obrigatórios funciona
