@@ -1,11 +1,10 @@
 # 3.5 Excluir Post (Delete)
 
 ## Descrição
-Implementar a funcionalidade de exclusão de posts com diálogo de confirmação e limpeza de arquivos associados.
+Implementar a funcionalidade de exclusão de posts com diálogo de confirmação.
 
 ## Dependências
 - 7.1 postService
-- 7.3 storageService
 - 2.1 AuthContext
 
 ## Etapas
@@ -22,17 +21,11 @@ Implementar a funcionalidade de exclusão de posts com diálogo de confirmação
   - Ou usuário tem role `admin`
 - Se não tiver permissão: não exibir botão de exclusão
 
-### Etapa 3 — Excluir imagem associada
-- Se o post possui `imageURL`:
-  - Extrair path da imagem no Storage
-  - Chamar `storageService.deleteImage(path)`
-- Tratar erro caso a imagem já não exista
-
-### Etapa 4 — Excluir documento do Firestore
+### Etapa 3 — Excluir documento do Firestore
 - Chamar `postService.deletePost(id)`
 - Remover documento da coleção `posts`
 
-### Etapa 5 — Feedback e redirecionamento
+### Etapa 4 — Feedback e redirecionamento
 - Exibir loading durante exclusão
 - Em caso de sucesso: redirecionar para Home (`/`)
 - Exibir toast/notificação de "Post excluído com sucesso"
@@ -42,6 +35,5 @@ Implementar a funcionalidade de exclusão de posts com diálogo de confirmação
 - [ ] Botão de excluir aparece apenas para autor ou admin
 - [ ] Modal de confirmação é exibido antes da exclusão
 - [ ] Post é removido do Firestore
-- [ ] Imagem de capa associada é removida do Storage
 - [ ] Usuário é redirecionado para Home após exclusão
 - [ ] Feedback visual é exibido (loading + mensagem de sucesso/erro)

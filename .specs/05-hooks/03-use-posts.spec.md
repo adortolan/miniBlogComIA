@@ -32,7 +32,7 @@ Criar hook customizado específico para operações com posts, construído sobre
 - Regenerar slug se título mudar
 
 ### Etapa 6 — Implementar deletePost
-- `deletePost(id)`: remove post e imagem associada
+- `deletePost(id)`: remove post do Firestore
 
 ### Etapa 7 — Implementar filtro por tag
 - `getPostsByTag(tag)`: filtra posts que contêm a tag

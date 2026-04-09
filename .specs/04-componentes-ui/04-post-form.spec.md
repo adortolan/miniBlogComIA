@@ -33,11 +33,11 @@ Implementar formulário reutilizável para criação e edição de posts.
 - Cada chip com botão "x" para remover
 - Limite máximo de tags (ex: 5)
 
-### Etapa 5 — Upload de imagem de capa
-- Input file para selecionar imagem
-- Preview da imagem selecionada
+### Etapa 5 — Campo de URL da imagem de capa
+- Input text para URL da imagem
+- Preview da imagem a partir da URL inserida
 - Se editando, exibir imagem atual com opção de trocar
-- Validar tipo (apenas imagens) e tamanho (máx 5MB)
+- Validar se é uma URL válida (opcional)
 
 ### Etapa 6 — Botões de ação
 - Botão "Publicar" / "Salvar" (submit do formulário)

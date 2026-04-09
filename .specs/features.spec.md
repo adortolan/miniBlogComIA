@@ -15,13 +15,11 @@
 ### 1.2 Configuração do Firebase
 - Inicializar Firestore Database
 - Inicializar Firebase Authentication
-- Inicializar Firebase Storage
 - Inicializar Firebase Hosting
 
 ### 1.3 Regras de Segurança (Firestore Security Rules)
 - `posts`: leitura pública, escrita restrita ao autor/admin
 - `users`: leitura pública do perfil, escrita restrita ao próprio usuário
-- Storage: upload restrito a usuários autenticados
 
 ---
 
@@ -56,10 +54,9 @@
 
 ### 3.1 Criar Post (Create)
 - Página/formulário de criação (`/admin/posts/new`)
-- Campos: `title`, `content` (textarea/Markdown), `tags`
+- Campos: `title`, `content` (textarea/Markdown), `tags`, `imageURL` (URL da imagem)
 - Geração automática de `slug` a partir do `title`
 - Preenchimento automático de `authorId` e `createdAt`
-- Upload de imagem de capa via Firebase Storage
 - Validação dos campos obrigatórios (title, content)
 - Redirecionamento para o post criado após sucesso
 
@@ -78,7 +75,7 @@
 ### 3.4 Editar Post (Update)
 - Página/formulário de edição (`/admin/posts/edit/:id`)
 - Pré-carregamento dos dados atuais do post no formulário
-- Campos editáveis: `title`, `content`, `tags`, imagem de capa
+- Campos editáveis: `title`, `content`, `tags`, `imageURL`
 - Re-geração do `slug` caso o título mude
 - Validação dos campos obrigatórios
 - Permissão: apenas autor do post ou admin
@@ -86,7 +83,6 @@
 ### 3.5 Excluir Post (Delete)
 - Botão de exclusão com modal/diálogo de confirmação
 - Remoção do documento da coleção `posts` no Firestore
-- Remoção da imagem de capa associada no Firebase Storage
 - Permissão: apenas autor do post ou admin
 - Redirecionamento para Home após exclusão
 
@@ -115,7 +111,7 @@
 
 ### 4.4 PostForm
 - Formulário reutilizável para criação e edição de posts
-- Campos: título, conteúdo (editor Markdown), tags (input com chips), imagem de capa (upload)
+- Campos: título, conteúdo (editor Markdown), tags (input com chips), imageURL (URL da imagem)
 - Botões: Salvar, Cancelar
 
 ---
@@ -170,10 +166,6 @@
 - `logout()` — encerrar sessão
 - `getCurrentUser()` — retorna usuário atual
 
-### 7.3 storageService
-- `uploadImage(file, path)` — upload de imagem ao Firebase Storage
-- `deleteImage(path)` — remoção de imagem
-- `getImageURL(path)` — retorna URL pública da imagem
 
 ---
 

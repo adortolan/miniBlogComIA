@@ -23,21 +23,17 @@ Configurar todos os serviços do Firebase necessários no console e no projeto l
 - Habilitar provedor **Google** como método de login
 - Habilitar provedor **Email/Senha** como método de login
 
-### Etapa 4 — Habilitar Firebase Storage
-- No console Firebase, ativar Storage
-- Configurar bucket padrão para armazenamento de imagens
-
-### Etapa 5 — Habilitar Firebase Hosting
+### Etapa 4 — Habilitar Firebase Hosting
 - No console Firebase, ativar Hosting
 - Instalar Firebase CLI: `npm install -g firebase-tools`
 - Executar `firebase init` na raiz do projeto
 - Selecionar Hosting e conectar ao projeto criado
 
-### Etapa 6 — Validar conexão local
-- Importar `db`, `auth` e `storage` de `src/config/firebase.js`
+### Etapa 5 — Validar conexão local
+- Importar `db` e `auth` de `src/config/firebase.js`
 - Testar conexão básica (ex: listar coleções ou verificar auth state)
 
 ## Critérios de Aceite
-- [ ] Firestore, Auth, Storage e Hosting estão ativos no console Firebase
-- [ ] `firebase.js` exporta instâncias funcionais de `db`, `auth` e `storage`
+- [ ] Firestore, Auth e Hosting estão ativos no console Firebase
+- [ ] `firebase.js` exporta instâncias funcionais de `db` e `auth`
 - [ ] Firebase CLI está instalado e conectado ao projeto
