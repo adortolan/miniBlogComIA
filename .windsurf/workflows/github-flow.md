@@ -128,7 +128,6 @@ O pipeline de CI/CD será executado automaticamente:
 1. ✅ Lint (ESLint)
 2. ✅ Testes (Jest/Vitest)
 3. ✅ Build
-4. ✅ Deploy Preview (Firebase Hosting - apenas para PRs)
 
 Aguarde todos os checks passarem antes de fazer merge.
 
@@ -137,7 +136,6 @@ Aguarde todos os checks passarem antes de fazer merge.
 Após aprovação e CI verde:
 1. **Squash and Merge** - Recomendado para manter histórico limpo
 2. Delete a branch após o merge
-3. O deploy para produção será acionado automaticamente
 
 ## 10. Limpeza local
 
@@ -163,7 +161,7 @@ git commit -m "hotfix: corrige problema crítico"
 git push origin hotfix/descricao-do-problema
 ```
 
-Abra PR e solicite revisão rápida. Após merge, a correção será deployada automaticamente.
+Abra PR e solicite revisão rápida.
 
 ---
 
@@ -171,7 +169,7 @@ Abra PR e solicite revisão rápida. Após merge, a correção será deployada a
 
 ```
 main → criar branch → desenvolver → commit → push → 
-PR → code review → CI/CD → merge → deploy → deletar branch
+PR → code review → CI/CD → merge → deletar branch
 ```
 
 ## 🔒 Regras de Proteção da Branch Main
@@ -182,15 +180,7 @@ PR → code review → CI/CD → merge → deploy → deletar branch
 - ✅ Requer CI/CD passar
 - ✅ Requer branch atualizada antes do merge
 
-## 🚀 Ambientes de Deploy
-
-| Branch   | Ambiente   | URL                              | Deploy        |
-|----------|------------|----------------------------------|---------------|
-| `main`   | Production | https://your-app.web.app         | Automático    |
-| `develop`| Staging    | https://your-app-staging.web.app | Automático    |
-| PR       | Preview    | URL temporária                   | Por PR        |
-
-## 💡 Boas Práticas
+##  Boas Práticas
 
 1. **Branches pequenas** - Prefira PRs menores e focados
 2. **Commits frequentes** - Commit early, commit often

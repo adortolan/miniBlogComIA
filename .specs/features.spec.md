@@ -15,7 +15,6 @@
 ### 1.2 Configuração do Firebase
 - Inicializar Firestore Database
 - Inicializar Firebase Authentication
-- Inicializar Firebase Hosting
 
 ### 1.3 Regras de Segurança (Firestore Security Rules)
 - `posts`: leitura pública, escrita restrita ao autor/admin
@@ -175,13 +174,3 @@
 - Configuração de CSS Modules ou TailwindCSS
 - Tema responsivo (mobile-first)
 - Layout base com Navbar + conteúdo + Footer
-
----
-
-## 9. Deploy
-
-### 9.1 Firebase Hosting
-- Build de produção (`npm run build`)
-- Deploy via Firebase CLI (`firebase deploy`)
-- Configuração de SPA (rewrite para `index.html`)
-- (Opcional) CI/CD com GitHub Actions

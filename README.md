@@ -1,11 +1,11 @@
 # 📝 Mini Blog - React + Firebase
 
 [![CI/CD Pipeline](https://github.com/seu-usuario/miniBlog/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/seu-usuario/miniBlog/actions/workflows/ci-cd.yml)
-[![Firebase Hosting](https://img.shields.io/badge/Firebase-Hosting-orange)](https://firebase.google.com/)
 [![React](https://img.shields.io/badge/React-18+-blue)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-5+-purple)](https://vitejs.dev/)
+[![Firebase](https://img.shields.io/badge/Firebase-Firestore-orange)](https://firebase.google.com/)
 
-Aplicação de blog moderno construída com **React**, **Firebase** (Serverless) e **CI/CD** automatizado.
+Aplicação de blog moderno construída com **React** e **Firebase** (Firestore + Authentication).
 
 ---
 
@@ -31,8 +31,7 @@ Aplicação de blog moderno construída com **React**, **Firebase** (Serverless)
 - **Backend:** Firebase (Serverless)
   - Firestore (Database NoSQL)
   - Authentication (Google OAuth)
-  - Hosting (Deploy)
-- **CI/CD:** GitHub Actions
+- **CI/CD:** GitHub Actions (Build & Test)
 - **Styling:** TailwindCSS / CSS Modules
 
 ### Estrutura de Dados (Firestore)
@@ -141,16 +140,11 @@ src/
 
 ### Workflow Automatizado
 
-```mermaid
-graph LR
-    A[Push/PR] --> B[Lint]
-    B --> C[Test]
-    C --> D[Build]
-    D --> E{Branch?}
-    E -->|PR| F[Deploy Preview]
-    E -->|develop| G[Deploy Staging]
-    E -->|main| H[Deploy Production]
-```
+O pipeline executa automaticamente a cada push/PR:
+
+1. **Lint** - Valida qualidade do código com ESLint
+2. **Test** - Executa testes unitários
+3. **Build** - Compila o projeto
 
 ### Status Checks
 
@@ -158,15 +152,6 @@ Toda PR passa por:
 - ✅ **ESLint** - Qualidade de código
 - ✅ **Unit Tests** - Testes automatizados
 - ✅ **Build** - Compilação sem erros
-- ✅ **Deploy Preview** - Preview temporário
-
-### Ambientes
-
-| Ambiente | Branch | URL | Deploy |
-|----------|--------|-----|--------|
-| Production | `main` | https://seu-projeto.web.app | Automático |
-| Staging | `develop` | https://seu-projeto-staging.web.app | Automático |
-| Preview | PRs | URL temporária (7 dias) | Por PR |
 
 📖 **[Guia Completo de Setup CI/CD](CICD-SETUP.md)**
 
@@ -182,7 +167,6 @@ Este projeto segue o **GitHub Flow** para desenvolvimento:
 4. Code Review
 5. CI/CD validação
 6. Merge para `main`
-7. Deploy automático
 
 📖 **Use a skill:** `/github-flow` para seguir o workflow completo
 
@@ -234,7 +218,6 @@ npm run preview
 | `npm run preview` | Preview do build local |
 | `npm run lint` | Executa ESLint |
 | `npm test` | Executa testes |
-| `firebase deploy` | Deploy manual para Firebase |
 
 ---
 
@@ -287,8 +270,6 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 ## 📞 Contato
 
 Criado por **[Seu Nome]** - [@seu-usuario](https://github.com/seu-usuario)
-
-**Deploy:** [https://seu-projeto.web.app](https://seu-projeto.web.app)
 
 ---
 
