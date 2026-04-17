@@ -138,7 +138,7 @@ describe('useLogin', () => {
 
     expect(result.current.loading).toBe(false);
 
-    const loginPromise = act(async () => {
+    act(() => {
       result.current.loginWithEmailAndPassword('test@example.com', 'password');
     });
 
@@ -146,8 +146,8 @@ describe('useLogin', () => {
       expect(result.current.loading).toBe(true);
     });
 
-    await loginPromise;
-
-    expect(result.current.loading).toBe(false);
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+    });
   });
 });

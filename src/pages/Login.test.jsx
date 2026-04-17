@@ -12,13 +12,10 @@ vi.mock('../contexts/AuthContext', () => ({
   useAuthContext: () => mockUseAuthContext(),
 }));
 
+const mockUseLogin = vi.fn();
+
 vi.mock('../hooks/useLogin', () => ({
-  useLogin: () => ({
-    loginWithEmailAndPassword: mockLoginWithEmailAndPassword,
-    loginWithGoogle: mockLoginWithGoogle,
-    loading: false,
-    error: null,
-  }),
+  useLogin: () => mockUseLogin(),
 }));
 
 vi.mock('react-router-dom', async () => {
@@ -39,6 +36,12 @@ describe('Login', () => {
     vi.clearAllMocks();
     mockUseAuthContext.mockReturnValue({
       isAuthenticated: false,
+    });
+    mockUseLogin.mockReturnValue({
+      loginWithEmailAndPassword: mockLoginWithEmailAndPassword,
+      loginWithGoogle: mockLoginWithGoogle,
+      loading: false,
+      error: null,
     });
   });
 

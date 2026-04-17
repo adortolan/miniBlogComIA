@@ -26,6 +26,15 @@ const TestComponent = () => {
 };
 
 describe('AuthContext', () => {
+  beforeEach(async () => {
+    vi.clearAllMocks();
+    const { onAuthStateChanged } = await import('firebase/auth');
+    vi.mocked(onAuthStateChanged).mockImplementation((auth, callback) => {
+      callback(null);
+      return vi.fn();
+    });
+  });
+
   it('deve fornecer valores iniciais corretos', async () => {
     render(
       <AuthProvider>
@@ -51,10 +60,9 @@ describe('AuthContext', () => {
     consoleError.mockRestore();
   });
 
-  it('deve inicializar com loading true', () => {
-    const { onAuthStateChanged } = require('firebase/auth');
-    
-    onAuthStateChanged.mockImplementation((auth, callback) => {
+  it('deve inicializar com loading true', async () => {
+    const { onAuthStateChanged } = await import('firebase/auth');
+    vi.mocked(onAuthStateChanged).mockImplementationOnce((auth, callback) => {
       return vi.fn();
     });
 
