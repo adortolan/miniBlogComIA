@@ -72,19 +72,19 @@ const Login = () => {
   const displayError = validationError || error;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
+    <div className="min-h-screen flex items-center justify-center bg-dark-800 px-4">
+      <div className="max-w-md w-full space-y-8 bg-dark-700 p-8 rounded-xl border border-dark-600">
         <div>
-          <h2 className="text-center text-3xl font-bold text-gray-900">
+          <h2 className="text-center text-3xl font-bold text-white">
             Entrar no MiniBlog
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-2 text-center text-sm text-gray-400">
             Faça login para continuar
           </p>
         </div>
 
         {displayError && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative">
+          <div className="bg-red-900/30 border border-red-700 text-red-400 px-4 py-3 rounded relative">
             <span className="block sm:inline">{displayError}</span>
           </div>
         )}
@@ -92,7 +92,7 @@ const Login = () => {
         <form className="mt-8 space-y-6" onSubmit={handleEmailLogin}>
           <div className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-300">
                 Email
               </label>
               <input
@@ -102,13 +102,13 @@ const Login = () => {
                 autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full px-3 py-2 bg-dark-800 border border-dark-600 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent"
                 placeholder="seu@email.com"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-300">
                 Senha
               </label>
               <input
@@ -118,7 +118,7 @@ const Login = () => {
                 autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full px-3 py-2 bg-dark-800 border border-dark-600 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent"
                 placeholder="••••••••"
               />
             </div>
@@ -128,7 +128,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
               {loading ? 'Entrando...' : 'Entrar'}
             </button>
@@ -137,10 +137,10 @@ const Login = () => {
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300"></div>
+            <div className="w-full border-t border-dark-600"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-gray-500">Ou continue com</span>
+            <span className="px-2 bg-dark-700 text-gray-400">Ou continue com</span>
           </div>
         </div>
 
@@ -149,7 +149,7 @@ const Login = () => {
             type="button"
             onClick={handleGoogleLogin}
             disabled={loading}
-            className="w-full flex items-center justify-center gap-3 py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-3 py-3 px-4 border border-dark-600 rounded-md bg-dark-800 text-sm font-medium text-white hover:bg-dark-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path
@@ -174,11 +174,11 @@ const Login = () => {
         </div>
 
         <div className="text-center">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-400">
             Não tem uma conta?{' '}
             <Link
               to="/registro"
-              className="font-medium text-indigo-600 hover:text-indigo-500"
+              className="font-medium text-primary-400 hover:text-primary-300 transition-colors"
             >
               Criar conta
             </Link>
