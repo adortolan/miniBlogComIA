@@ -56,7 +56,7 @@ describe('Navbar', () => {
     renderWithRouter(<Navbar />);
 
     expect(screen.getByText('Entrar')).toBeInTheDocument();
-    expect(screen.getByText('Criar Conta')).toBeInTheDocument();
+    expect(screen.getByText('Explorar artigos')).toBeInTheDocument();
   });
 
   it('não deve mostrar botão de sair quando não autenticado', () => {
@@ -131,7 +131,7 @@ describe('Navbar', () => {
     renderWithRouter(<Navbar />);
 
     expect(screen.queryByText('Entrar')).not.toBeInTheDocument();
-    expect(screen.queryByText('Criar Conta')).not.toBeInTheDocument();
+    expect(screen.queryByText('Explorar artigos')).not.toBeInTheDocument();
   });
 
   it('links devem ter os hrefs corretos', () => {
@@ -144,7 +144,7 @@ describe('Navbar', () => {
 
     const homeLink = screen.getAllByText('Home')[0];
     const loginLink = screen.getByText('Entrar');
-    const registerLink = screen.getByText('Criar Conta');
+    const registerLink = screen.getByText('Explorar artigos');
 
     expect(homeLink.closest('a')).toHaveAttribute('href', '/');
     expect(loginLink.closest('a')).toHaveAttribute('href', '/login');
