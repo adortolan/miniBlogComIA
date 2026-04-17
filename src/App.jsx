@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import FirebaseTest from './components/FirebaseTest'
 import AuthStatus from './components/AuthStatus'
+import Login from './pages/Login'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         </div>
         <Routes>
           <Route path="/" element={<div>Home Page - Em construção</div>} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
     </Router>

@@ -1,4 +1,5 @@
 import { useAuthContext } from '../contexts/AuthContext';
+import { Link } from 'react-router-dom';
 
 const AuthStatus = () => {
   const { user, loading, isAuthenticated } = useAuthContext();
@@ -21,7 +22,15 @@ const AuthStatus = () => {
           <p>UID: {user.uid}</p>
         </div>
       ) : (
-        <p className="text-gray-700">❌ Nenhum usuário autenticado</p>
+        <div className="text-gray-700">
+          <p className="mb-2">❌ Nenhum usuário autenticado</p>
+          <Link
+            to="/login"
+            className="inline-block px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors"
+          >
+            Fazer Login
+          </Link>
+        </div>
       )}
     </div>
   );
