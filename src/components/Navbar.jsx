@@ -75,7 +75,7 @@ const Navbar = () => {
                   to="/registro"
                   className="px-5 py-2 bg-transparent border border-white text-white rounded-md hover:bg-white hover:text-dark-800 transition-all text-sm font-medium"
                 >
-                  Fale com Especialista
+                  Explorar artigos
                 </Link>
               </>
             )}
