@@ -9,8 +9,8 @@ const HeroSection = () => {
             <div className="absolute inset-0 bg-gradient-to-br from-primary-400 to-primary-600 rounded-lg transform -rotate-3"></div>
             <div className="relative bg-primary-400 rounded-lg p-1">
               <img
-                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=800"
-                alt="Professional"
+                src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=800"
+                alt="AI Brain Technology"
                 className="w-full h-auto rounded-lg object-cover"
               />
             </div>
