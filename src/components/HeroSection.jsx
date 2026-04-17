@@ -4,7 +4,7 @@ const HeroSection = () => {
   return (
     <section className="bg-dark-800 min-h-screen flex items-center">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-br from-primary-400 to-primary-600 rounded-lg transform -rotate-3"></div>
             <div className="relative bg-primary-400 rounded-lg p-1">
