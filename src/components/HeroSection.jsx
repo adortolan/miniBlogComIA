@@ -18,25 +18,45 @@ const HeroSection = () => {
 
           <div className="space-y-6">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-              Aumente a produtividade do seu negócio e conquiste qualidade de vida com o MiniBlog.
+              O Futuro do Código: Desenvolvendo com IA
             </h1>
             
             <div className="space-y-4 text-gray-300">
               <p className="text-lg">
-                Com projetos personalizados, nossa equipe mapeia as atividades da sua organização e modela um fluxo de automação exclusivo para cada processo.
+                Bem-vindo ao espaço onde a lógica de programação encontra o potencial ilimitado da Inteligência Artificial. Este blog é dedicado a desenvolvedores que desejam elevar seu nível profissional, explorando como as ferramentas de IA estão transformando a maneira como escrevemos, testamos e implantamos software.
               </p>
               
-              <p className="text-lg font-light">
-                Uma consultoria completa com treinamento, implantação e suporte!
+              <div className="space-y-3 text-base">
+                <p className="font-semibold text-white">O que você encontrará aqui:</p>
+                
+                <p>
+                  <span className="font-medium text-primary-400">Aceleração de Workflow:</span> Tutoriais práticos sobre como usar assistentes de código para aumentar a produtividade diária.
+                </p>
+                
+                <p>
+                  <span className="font-medium text-primary-400">Arquitetura e IA:</span> Discussões sobre como integrar modelos de linguagem e APIs inteligentes em sistemas robustos.
+                </p>
+                
+                <p>
+                  <span className="font-medium text-primary-400">Novas Fronteiras:</span> Análises sobre o impacto da IA generativa em linguagens modernas e frameworks populares.
+                </p>
+                
+                <p>
+                  <span className="font-medium text-primary-400">Desafios Reais:</span> Reflexões sobre ética, segurança e a evolução do papel do desenvolvedor no mercado atual.
+                </p>
+              </div>
+              
+              <p className="text-lg font-light italic pt-2">
+                Não estamos apenas escrevendo código; estamos projetando o amanhã. Explore nossos artigos e descubra como dominar as ferramentas que estão redefinindo a engenharia de software.
               </p>
             </div>
 
             <div className="pt-4">
               <Link
-                to="/registro"
+                to="/posts"
                 className="inline-block px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-md font-medium transition-all transform hover:scale-105"
               >
-                Fale com Especialista
+                Explorar Artigos
               </Link>
             </div>
           </div>
