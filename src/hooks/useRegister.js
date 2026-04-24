@@ -52,7 +52,7 @@ export const useRegister = () => {
           errorMessage = 'Operação não permitida';
           break;
         default:
-          errorMessage = err.message;
+          errorMessage = err?.message || errorMessage;
       }
 
       setError(errorMessage);
