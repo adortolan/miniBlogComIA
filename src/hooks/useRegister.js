@@ -18,17 +18,23 @@ export const useRegister = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      await updateProfile(user, {
-        displayName
-      });
+      try {
+        await updateProfile(user, {
+          displayName
+        });
 
-      await setDoc(doc(db, 'users', user.uid), {
-        displayName,
-        photoURL: '',
-        role: 'reader'
-      });
+        await setDoc(doc(db, 'users', user.uid), {
+          displayName,
+          email,
+          photoURL: '',
+          role: 'reader'
+        });
 
-      return { success: true };
+        return { success: true };
+      } catch (profileError) {
+        await user.delete();
+        throw profileError;
+      }
     } catch (err) {
       let errorMessage = 'Erro ao criar conta';
 

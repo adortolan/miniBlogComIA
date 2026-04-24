@@ -1,19 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, MemoryRouter } from 'react-router-dom';
 import AdminRoute from './AdminRoute';
 
-const mockNavigate = vi.fn();
-
-vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual('react-router-dom');
-  return {
-    ...actual,
-    useNavigate: () => mockNavigate,
-  };
-});
-
-const mockAuthContext = {
+let mockAuthContext = {
   isAuthenticated: false,
   loading: false,
   user: null,
@@ -23,13 +13,17 @@ vi.mock('../contexts/AuthContext', () => ({
   useAuthContext: () => mockAuthContext,
 }));
 
+const mockGetDoc = vi.fn();
+const mockDoc = vi.fn();
+
 vi.mock('firebase/firestore', () => ({
-  doc: vi.fn(),
-  getDoc: vi.fn(),
+  doc: (...args) => mockDoc(...args),
+  getDoc: (...args) => mockGetDoc(...args),
 }));
 
 vi.mock('../config/firebase', () => ({
   db: {},
+  auth: {},
 }));
 
 const TestComponent = () => <div>Admin Content</div>;
@@ -39,40 +33,43 @@ describe('AdminRoute', () => {
     vi.clearAllMocks();
   });
 
-  const renderAdminRoute = async (authState = {}, userRole = 'reader') => {
-    Object.assign(mockAuthContext, authState);
+  const renderAdminRoute = (authState = {}, userRole = 'reader') => {
+    mockAuthContext = { ...mockAuthContext, ...authState };
 
-    const { getDoc } = await import('firebase/firestore');
-    vi.mocked(getDoc).mockResolvedValue({
+    mockGetDoc.mockResolvedValue({
       exists: () => true,
       data: () => ({ role: userRole }),
     });
 
+    mockDoc.mockReturnValue({ id: 'test-uid' });
+
     return render(
-      <BrowserRouter>
+      <MemoryRouter initialEntries={['/']}>
         <Routes>
           <Route element={<AdminRoute />}>
             <Route path="/" element={<TestComponent />} />
           </Route>
+          <Route path="/login" element={<div>Login Page</div>} />
         </Routes>
-      </BrowserRouter>
+      </MemoryRouter>
     );
   };
 
-  it('deve exibir loading quando estiver verificando autenticação', async () => {
-    await renderAdminRoute({ loading: true, isAuthenticated: false, user: null });
+  it('deve exibir loading quando estiver verificando autenticação', () => {
+    renderAdminRoute({ loading: true, isAuthenticated: false, user: null });
 
     expect(screen.getByText(/carregando/i)).toBeInTheDocument();
   });
 
-  it('deve redirecionar para /login quando não autenticado', async () => {
-    await renderAdminRoute({ loading: false, isAuthenticated: false, user: null });
+  it('deve redirecionar para /login quando não autenticado', () => {
+    renderAdminRoute({ loading: false, isAuthenticated: false, user: null });
 
     expect(screen.queryByText('Admin Content')).not.toBeInTheDocument();
+    expect(screen.queryByText('Login Page')).toBeInTheDocument();
   });
 
-  it('deve exibir loading enquanto verifica role do usuário', async () => {
-    await renderAdminRoute({ 
+  it('deve exibir loading enquanto verifica role do usuário', () => {
+    renderAdminRoute({ 
       loading: false, 
       isAuthenticated: true, 
       user: { uid: 'test-uid' } 
@@ -82,7 +79,7 @@ describe('AdminRoute', () => {
   });
 
   it('deve renderizar conteúdo admin quando usuário é admin', async () => {
-    await renderAdminRoute(
+    renderAdminRoute(
       { 
         loading: false, 
         isAuthenticated: true, 
@@ -97,7 +94,7 @@ describe('AdminRoute', () => {
   });
 
   it('deve redirecionar para home quando usuário não é admin', async () => {
-    await renderAdminRoute(
+    renderAdminRoute(
       { 
         loading: false, 
         isAuthenticated: true, 
@@ -112,9 +109,7 @@ describe('AdminRoute', () => {
   });
 
   it('deve buscar role do usuário no Firestore', async () => {
-    const { getDoc, doc } = await import('firebase/firestore');
-    
-    await renderAdminRoute(
+    renderAdminRoute(
       { 
         loading: false, 
         isAuthenticated: true, 
@@ -124,8 +119,8 @@ describe('AdminRoute', () => {
     );
 
     await waitFor(() => {
-      expect(doc).toHaveBeenCalledWith(expect.anything(), 'users', 'test-uid');
-      expect(getDoc).toHaveBeenCalled();
+      expect(mockDoc).toHaveBeenCalledWith(expect.anything(), 'users', 'test-uid');
+      expect(mockGetDoc).toHaveBeenCalled();
     });
   });
 });

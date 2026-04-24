@@ -12,7 +12,7 @@ const AdminRoute = () => {
 
   useEffect(() => {
     const checkAdminRole = async () => {
-      if (!user) {
+      if (!user?.uid) {
         setCheckingRole(false);
         return;
       }
@@ -22,7 +22,7 @@ const AdminRoute = () => {
         
         if (userDoc.exists()) {
           const userData = userDoc.data();
-          setIsAdmin(userData.role === 'admin');
+          setIsAdmin(userData?.role === 'admin');
         } else {
           setIsAdmin(false);
         }
@@ -37,7 +37,7 @@ const AdminRoute = () => {
     if (!authLoading) {
       checkAdminRole();
     }
-  }, [user, authLoading]);
+  }, [user?.uid, authLoading]);
 
   if (authLoading || checkingRole) {
     return (

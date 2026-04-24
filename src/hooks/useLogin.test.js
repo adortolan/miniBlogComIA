@@ -5,6 +5,9 @@ import { useLogin } from './useLogin';
 const mockSignInWithEmailAndPassword = vi.fn();
 const mockSignInWithPopup = vi.fn();
 const mockGoogleAuthProvider = vi.fn();
+const mockGetDoc = vi.fn();
+const mockSetDoc = vi.fn();
+const mockDoc = vi.fn();
 
 vi.mock('firebase/auth', () => ({
   signInWithEmailAndPassword: (...args) => mockSignInWithEmailAndPassword(...args),
@@ -16,8 +19,15 @@ vi.mock('firebase/auth', () => ({
   },
 }));
 
+vi.mock('firebase/firestore', () => ({
+  doc: (...args) => mockDoc(...args),
+  getDoc: (...args) => mockGetDoc(...args),
+  setDoc: (...args) => mockSetDoc(...args),
+}));
+
 vi.mock('../config/firebase', () => ({
   auth: {},
+  db: {},
 }));
 
 describe('useLogin', () => {
@@ -86,7 +96,17 @@ describe('useLogin', () => {
 
   describe('loginWithGoogle', () => {
     it('deve fazer login com Google com sucesso', async () => {
-      mockSignInWithPopup.mockResolvedValue({ user: { email: 'google@example.com' } });
+      mockSignInWithPopup.mockResolvedValue({ 
+        user: { 
+          uid: 'google-uid',
+          email: 'google@example.com',
+          displayName: 'Google User',
+          photoURL: 'http://photo.url'
+        } 
+      });
+      mockDoc.mockReturnValue({ id: 'google-uid' });
+      mockGetDoc.mockResolvedValue({ exists: () => false });
+      mockSetDoc.mockResolvedValue();
 
       const { result } = renderHook(() => useLogin());
 
@@ -102,6 +122,7 @@ describe('useLogin', () => {
 
     it('deve retornar erro quando popup é bloqueado', async () => {
       mockSignInWithPopup.mockRejectedValue({ code: 'auth/popup-blocked' });
+      mockDoc.mockReturnValue({ id: 'google-uid' });
 
       const { result } = renderHook(() => useLogin());
 
@@ -116,6 +137,7 @@ describe('useLogin', () => {
 
     it('deve retornar erro quando usuário cancela o popup', async () => {
       mockSignInWithPopup.mockRejectedValue({ code: 'auth/popup-closed-by-user' });
+      mockDoc.mockReturnValue({ id: 'google-uid' });
 
       const { result } = renderHook(() => useLogin());
 

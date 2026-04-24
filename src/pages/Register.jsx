@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthContext } from '../contexts/AuthContext';
 import { useRegister } from '../hooks/useRegister';
 
@@ -13,12 +13,15 @@ const Register = () => {
   const { isAuthenticated } = useAuthContext();
   const { register, loading, error } = useRegister();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || '/';
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/', { replace: true });
+      navigate(from, { replace: true });
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, from]);
 
   const validateForm = () => {
     if (!displayName.trim()) {
@@ -66,7 +69,7 @@ const Register = () => {
     const result = await register(displayName, email, password);
     
     if (result.success) {
-      navigate('/', { replace: true });
+      navigate(from, { replace: true });
     }
   };
 
