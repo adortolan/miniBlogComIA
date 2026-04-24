@@ -8,7 +8,7 @@ const mockLoginWithEmailAndPassword = vi.fn();
 const mockLoginWithGoogle = vi.fn();
 const mockNavigate = vi.fn();
 
-vi.mock('../contexts/AuthContext', () => ({
+vi.mock('../hooks/useAuthContext', () => ({
   useAuthContext: () => mockUseAuthContext(),
 }));
 

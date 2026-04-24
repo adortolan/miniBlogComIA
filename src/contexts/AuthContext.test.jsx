@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import { AuthProvider, useAuthContext } from './AuthContext';
+import { AuthProvider } from './AuthContext';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 vi.mock('firebase/auth', () => ({
   onAuthStateChanged: vi.fn((auth, callback) => {
@@ -62,7 +63,7 @@ describe('AuthContext', () => {
 
   it('deve inicializar com loading true', async () => {
     const { onAuthStateChanged } = await import('firebase/auth');
-    vi.mocked(onAuthStateChanged).mockImplementationOnce((auth, callback) => {
+    vi.mocked(onAuthStateChanged).mockImplementationOnce(() => {
       return vi.fn();
     });
 

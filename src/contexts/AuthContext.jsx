@@ -1,10 +1,12 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../config/firebase';
 
-const AuthContext = createContext(undefined);
+// eslint-disable-next-line react-refresh/only-export-components
+export const AuthContext = createContext(undefined);
 
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -30,14 +32,8 @@ export const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-export const useAuthContext = () => {
-  const context = useContext(AuthContext);
-  
-  if (context === undefined) {
-    throw new Error('useAuthContext must be used within an AuthProvider');
-  }
-  
-  return context;
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };

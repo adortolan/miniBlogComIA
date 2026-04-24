@@ -5,7 +5,7 @@ import AuthStatus from './AuthStatus';
 
 const mockUseAuthContext = vi.fn();
 
-vi.mock('../contexts/AuthContext', () => ({
+vi.mock('../hooks/useAuthContext', () => ({
   useAuthContext: () => mockUseAuthContext(),
 }));
 

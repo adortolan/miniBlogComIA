@@ -1,4 +1,4 @@
-import { useAuthContext } from '../contexts/AuthContext';
+import { useAuthContext } from '../hooks/useAuthContext';
 import { Link } from 'react-router-dom';
 
 const AuthStatus = () => {
