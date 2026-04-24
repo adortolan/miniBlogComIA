@@ -1,0 +1,142 @@
+name: PR Validation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  validate-pr:
+    name: 📝 Validate PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate PR title
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            docs
+            style
+            refactor
+            perf
+            test
+            chore
+            ci
+          requireScope: false
+
+      - name: Check for merge conflicts
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          git merge-base --is-ancestor origin/${{ github.base_ref }} HEAD || {
+            echo "❌ Branch is behind base branch. Please rebase."
+            exit 1
+          }
+
+      - name: Check file size
+        run: |
+          MAX_SIZE=500000  # 500KB
+          large_files=$(find . -type f -size +${MAX_SIZE}c -not -path "*/node_modules/*" -not -path "*/.git/*" || true)
+          if [ ! -z "$large_files" ]; then
+            echo "⚠️ Large files detected:"
+            echo "$large_files"
+            echo "Consider optimizing or using Git LFS for files larger than 500KB"
+          fi
+
+  code-quality:
+    name: 🎯 Code Quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run lint with detailed output
+        run: npm run lint -- --format=json --output-file=eslint-report.json || true
+
+      - name: Upload ESLint report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eslint-report
+          path: eslint-report.json
+
+      - name: Check for TODO comments
+        run: |
+          echo "## 📋 TODO/FIXME Comments" >> $GITHUB_STEP_SUMMARY
+          todos=$(grep -rn "TODO\|FIXME" src/ --exclude-dir=node_modules || true)
+          if [ ! -z "$todos" ]; then
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "$todos" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ No TODO/FIXME comments found" >> $GITHUB_STEP_SUMMARY
+          fi
+
+  security:
+    name: 🔒 Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Run npm audit
+        run: |
+          npm audit --audit-level=moderate || {
+            echo "⚠️ Security vulnerabilities found. Please review npm audit output."
+            npm audit --audit-level=moderate
+          }
+
+      - name: Check for hardcoded secrets
+        run: |
+          secrets_found=$(grep -rn "FIREBASE\|API_KEY\|SECRET" src/ --include="*.js" --include="*.jsx" | grep -v "process.env" || true)
+          if [ ! -z "$secrets_found" ]; then
+            echo "❌ Potential hardcoded secrets found:"
+            echo "$secrets_found"
+            exit 1
+          fi
+
+  size-limit:
+    name: 📦 Bundle Size
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build and analyze
+        run: |
+          npm run build
+          echo "## 📊 Build Size Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          du -sh dist/* >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY

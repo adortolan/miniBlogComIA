@@ -9,6 +9,28 @@ export default defineConfig({
     environment: 'happy-dom',
     setupFiles: './src/test/setup.js',
     css: true,
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html', 'lcov', 'json-summary'],
+      exclude: [
+        'node_modules/',
+        'src/test/',
+        '**/*.spec.{js,jsx}',
+        '**/*.test.{js,jsx}',
+        '**/dist/',
+        '**/.{eslint,prettier}rc.{js,cjs}',
+        'vite.config.js',
+        'vitest.config.js',
+        'tailwind.config.js',
+        'postcss.config.js',
+      ],
+      include: ['src/**/*.{js,jsx}'],
+      all: true,
+      lines: 70,
+      functions: 70,
+      branches: 70,
+      statements: 70,
+    },
   },
   resolve: {
     alias: {
