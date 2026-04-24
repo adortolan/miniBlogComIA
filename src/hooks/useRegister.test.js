@@ -20,6 +20,7 @@ vi.mock('../config/firebase', () => ({
 describe('useRegister', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.spyOn(console, 'error').mockImplementation(() => {});
   });
 
   it('deve inicializar com estados corretos', () => {
@@ -83,9 +84,12 @@ describe('useRegister', () => {
         expect.anything(),
         expect.objectContaining({
           displayName: 'Test User',
+          email: 'test@test.com',
           photoURL: '',
-          role: 'reader'
-        })
+          role: 'reader',
+          createdAt: expect.any(String)
+        }),
+        { merge: false }
       );
     });
   });
@@ -175,5 +179,96 @@ describe('useRegister', () => {
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
     });
+  });
+
+  it('deve tratar erro de permissão do Firestore', async () => {
+    const { createUserWithEmailAndPassword } = await import('firebase/auth');
+
+    const error = { code: 'permission-denied', message: 'Permission denied' };
+    vi.mocked(createUserWithEmailAndPassword).mockRejectedValue(error);
+
+    const { result } = renderHook(() => useRegister());
+
+    let registerResult;
+    await act(async () => {
+      registerResult = await result.current.register(
+        'Test User',
+        'test@test.com',
+        'password123'
+      );
+    });
+
+    expect(registerResult.success).toBe(false);
+    expect(result.current.error).toBe('Erro de permissão no Firestore. Verifique as regras de segurança');
+  });
+
+  it('deve tratar erro de serviço indisponível', async () => {
+    const { createUserWithEmailAndPassword } = await import('firebase/auth');
+
+    const error = { code: 'unavailable', message: 'Service unavailable' };
+    vi.mocked(createUserWithEmailAndPassword).mockRejectedValue(error);
+
+    const { result } = renderHook(() => useRegister());
+
+    let registerResult;
+    await act(async () => {
+      registerResult = await result.current.register(
+        'Test User',
+        'test@test.com',
+        'password123'
+      );
+    });
+
+    expect(registerResult.success).toBe(false);
+    expect(result.current.error).toBe('Serviço indisponível. Verifique sua conexão e as configurações do Firebase');
+  });
+
+  it('deve tratar erro de CORS', async () => {
+    const { createUserWithEmailAndPassword } = await import('firebase/auth');
+
+    const error = { code: 'unknown', message: 'CORS error occurred' };
+    vi.mocked(createUserWithEmailAndPassword).mockRejectedValue(error);
+
+    const { result } = renderHook(() => useRegister());
+
+    let registerResult;
+    await act(async () => {
+      registerResult = await result.current.register(
+        'Test User',
+        'test@test.com',
+        'password123'
+      );
+    });
+
+    expect(registerResult.success).toBe(false);
+    expect(result.current.error).toBe('Erro de CORS. Verifique as variáveis de ambiente do Firebase');
+  });
+
+  it('deve deletar usuário quando há erro ao criar perfil no Firestore', async () => {
+    const { createUserWithEmailAndPassword, updateProfile } = await import('firebase/auth');
+    const { setDoc } = await import('firebase/firestore');
+
+    const mockUser = { 
+      uid: 'test-uid', 
+      email: 'test@test.com',
+      delete: vi.fn().mockResolvedValue()
+    };
+    vi.mocked(createUserWithEmailAndPassword).mockResolvedValue({ user: mockUser });
+    vi.mocked(updateProfile).mockResolvedValue();
+    vi.mocked(setDoc).mockRejectedValue(new Error('Firestore error'));
+
+    const { result } = renderHook(() => useRegister());
+
+    let registerResult;
+    await act(async () => {
+      registerResult = await result.current.register(
+        'Test User',
+        'test@test.com',
+        'password123'
+      );
+    });
+
+    expect(registerResult.success).toBe(false);
+    expect(mockUser.delete).toHaveBeenCalled();
   });
 });
