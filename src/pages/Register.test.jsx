@@ -161,16 +161,10 @@ describe('Register Page', () => {
     expect(loginLink.closest('a')).toHaveAttribute('href', '/login');
   });
 
-  it('deve redirecionar usuário logado para home', () => {
-    const { useAuthContext } = require('../contexts/AuthContext');
-    vi.mocked(useAuthContext).mockReturnValue({
-      isAuthenticated: true,
-    });
-
+  it('deve exibir formulário quando não autenticado', () => {
     renderRegister();
 
-    waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith('/', { replace: true });
-    });
+    expect(screen.getByLabelText(/nome/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
   });
 });

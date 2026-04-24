@@ -62,7 +62,7 @@ describe('AuthContext', () => {
 
   it('deve inicializar com loading true', async () => {
     const { onAuthStateChanged } = await import('firebase/auth');
-    vi.mocked(onAuthStateChanged).mockImplementationOnce((auth, callback) => {
+    vi.mocked(onAuthStateChanged).mockImplementationOnce(() => {
       return vi.fn();
     });
 
