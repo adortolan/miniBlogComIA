@@ -3,7 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { postService } from '../services/postService';
 import { useAuth } from '../contexts/AuthContext';
+import { useDeletePost } from '../hooks/useDeletePost';
 import { formatDate } from '../utils/formatDate';
+import { DeleteConfirmModal } from '../components/DeleteConfirmModal';
 
 /**
  * Página de detalhes de um post individual
@@ -14,9 +16,11 @@ export const PostDetail = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { deletePost, loading: deleting } = useDeletePost();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -53,8 +57,17 @@ export const PostDetail = () => {
   };
 
   const handleDelete = () => {
-    // Será implementado na spec 05
-    console.log('Delete post:', post.id);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      await deletePost(post.id);
+      navigate('/');
+    } catch (err) {
+      console.error('Erro ao excluir post:', err);
+      setShowDeleteModal(false);
+    }
   };
 
   if (loading) {
@@ -164,6 +177,14 @@ export const PostDetail = () => {
           </div>
         </div>
       </article>
+
+      <DeleteConfirmModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={confirmDelete}
+        postTitle={post.title}
+        loading={deleting}
+      />
     </div>
   );
 };
