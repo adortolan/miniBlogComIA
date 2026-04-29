@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 /**
  * Componente de formulário reutilizável para criar/editar posts
@@ -203,4 +204,15 @@ export const PostForm = ({ onSubmit, loading = false, initialData = null }) => {
       </div>
     </form>
   );
+};
+
+PostForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
+  initialData: PropTypes.shape({
+    title: PropTypes.string,
+    content: PropTypes.string,
+    tags: PropTypes.arrayOf(PropTypes.string),
+    imageURL: PropTypes.string,
+  }),
 };

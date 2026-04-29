@@ -1,4 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { formatRelativeDate } from '../utils/formatDate';
 
 /**
@@ -18,7 +19,7 @@ export const PostCard = ({ post }) => {
   };
 
   const createExcerpt = (text, maxLength = 150) => {
-    const cleanText = text.replace(/[#*`\[\]()]/g, '').trim();
+    const cleanText = text.replace(/[#*`[\]()]/g, '').trim();
     
     if (cleanText.length <= maxLength) {
       return cleanText;
@@ -78,4 +79,15 @@ export const PostCard = ({ post }) => {
       </article>
     </Link>
   );
+};
+
+PostCard.propTypes = {
+  post: PropTypes.shape({
+    slug: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.string),
+    imageURL: PropTypes.string,
+    createdAt: PropTypes.object.isRequired,
+  }).isRequired,
 };

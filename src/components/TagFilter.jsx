@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 /**
  * Componente de filtro por tags
  * @param {Object} props - Props do componente
@@ -47,4 +49,10 @@ export const TagFilter = ({ tags, selectedTag, onTagSelect }) => {
       </div>
     </div>
   );
+};
+
+TagFilter.propTypes = {
+  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selectedTag: PropTypes.string,
+  onTagSelect: PropTypes.func.isRequired,
 };

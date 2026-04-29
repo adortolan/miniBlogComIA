@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 /**
  * Modal de confirmação para exclusão de post
  * @param {Object} props - Props do componente
@@ -64,7 +66,7 @@ export const DeleteConfirmModal = ({
 
         <p className="text-gray-600 text-center mb-6">
           Você está prestes a excluir o post{' '}
-          <strong className="text-gray-900">"{postTitle}"</strong>. Esta ação não
+          <strong className="text-gray-900">&quot;{postTitle}&quot;</strong>. Esta ação não
           pode ser desfeita.
         </p>
 
@@ -91,4 +93,12 @@ export const DeleteConfirmModal = ({
       </div>
     </div>
   );
+};
+
+DeleteConfirmModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onConfirm: PropTypes.func.isRequired,
+  postTitle: PropTypes.string.isRequired,
+  loading: PropTypes.bool,
 };
