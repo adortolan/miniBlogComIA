@@ -1,5 +1,9 @@
+import { useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { usePosts } from '../hooks/usePosts';
+import { usePostsByTag } from '../hooks/usePostsByTag';
 import { PostCard } from '../components/PostCard';
+import { TagFilter } from '../components/TagFilter';
 
 /**
  * Página principal que exibe lista de posts
@@ -7,7 +11,33 @@ import { PostCard } from '../components/PostCard';
  * @returns {JSX.Element}
  */
 export const Home = () => {
-  const { posts, loading, error } = usePosts({ realtime: true });
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedTag = searchParams.get('tag');
+  
+  const { posts: allPosts, loading: loadingAll, error: errorAll } = usePosts({ realtime: true });
+  const { posts: tagPosts, loading: loadingTag, error: errorTag } = usePostsByTag(selectedTag);
+
+  const posts = selectedTag ? tagPosts : allPosts;
+  const loading = selectedTag ? loadingTag : loadingAll;
+  const error = selectedTag ? errorTag : errorAll;
+
+  const availableTags = useMemo(() => {
+    const tagsSet = new Set();
+    allPosts.forEach((post) => {
+      if (post.tags && Array.isArray(post.tags)) {
+        post.tags.forEach((tag) => tagsSet.add(tag));
+      }
+    });
+    return Array.from(tagsSet).sort();
+  }, [allPosts]);
+
+  const handleTagSelect = (tag) => {
+    if (tag) {
+      setSearchParams({ tag });
+    } else {
+      setSearchParams({});
+    }
+  };
 
   if (loading) {
     return (
@@ -66,12 +96,22 @@ export const Home = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Posts Recentes
+            {selectedTag ? `Posts sobre "${selectedTag}"` : 'Posts Recentes'}
           </h1>
           <p className="text-gray-600">
-            Explore os últimos artigos e tutoriais da nossa comunidade
+            {selectedTag 
+              ? `Exibindo posts filtrados pela tag "${selectedTag}"`
+              : 'Explore os últimos artigos e tutoriais da nossa comunidade'}
           </p>
         </div>
+
+        {availableTags.length > 0 && (
+          <TagFilter
+            tags={availableTags}
+            selectedTag={selectedTag}
+            onTagSelect={handleTagSelect}
+          />
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {posts.map((post) => (
