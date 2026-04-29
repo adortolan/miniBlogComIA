@@ -131,7 +131,7 @@ export const PostForm = ({ onSubmit, loading = false, initialData = null }) => {
           name="content"
           value={formData.content}
           onChange={handleChange}
-          rows={12}
+          rows={2}
           className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500 ${
             errors.content ? 'border-red-500' : 'border-gray-300'
           }`}
