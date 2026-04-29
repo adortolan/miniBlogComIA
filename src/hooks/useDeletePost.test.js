@@ -50,7 +50,11 @@ describe('useDeletePost', () => {
     const { result } = renderHook(() => useDeletePost());
 
     await act(async () => {
-      await result.current.deletePost('post123');
+      try {
+        await result.current.deletePost('post123');
+      } catch (error) {
+        // Erro esperado
+      }
     });
 
     await waitFor(() => {
@@ -67,7 +71,11 @@ describe('useDeletePost', () => {
     const { result } = renderHook(() => useDeletePost());
 
     await act(async () => {
-      await result.current.deletePost('post123');
+      try {
+        await result.current.deletePost('post123');
+      } catch (error) {
+        // Primeiro erro esperado
+      }
     });
 
     expect(result.current.error).toBeTruthy();

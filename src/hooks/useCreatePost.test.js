@@ -5,7 +5,9 @@ import { postService } from '../services/postService';
 import { useAuth } from '../contexts/AuthContext';
 
 vi.mock('../services/postService');
-vi.mock('../contexts/AuthContext');
+vi.mock('../contexts/AuthContext', () => ({
+  useAuth: vi.fn(),
+}));
 
 describe('useCreatePost', () => {
   beforeEach(() => {
@@ -74,11 +76,15 @@ describe('useCreatePost', () => {
     const { result } = renderHook(() => useCreatePost());
 
     await act(async () => {
-      await result.current.createPost({
-        title: 'Post',
-        content: 'Conteúdo',
-        tags: [],
-      });
+      try {
+        await result.current.createPost({
+          title: 'Post',
+          content: 'Conteúdo',
+          tags: [],
+        });
+      } catch (error) {
+        // Erro esperado
+      }
     });
 
     await waitFor(() => {
@@ -91,10 +97,14 @@ describe('useCreatePost', () => {
     const { result } = renderHook(() => useCreatePost());
 
     await act(async () => {
-      await result.current.createPost({
-        content: 'Conteúdo sem título',
-        tags: [],
-      });
+      try {
+        await result.current.createPost({
+          content: 'Conteúdo sem título',
+          tags: [],
+        });
+      } catch (error) {
+        // Erro esperado
+      }
     });
 
     await waitFor(() => {

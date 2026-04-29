@@ -6,7 +6,9 @@ import { postService } from '../services/postService';
 import { useAuth } from '../contexts/AuthContext';
 
 vi.mock('../services/postService');
-vi.mock('../contexts/AuthContext');
+vi.mock('../contexts/AuthContext', () => ({
+  useAuth: vi.fn(),
+}));
 
 describe('PostDetail', () => {
   const mockPost = {

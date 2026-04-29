@@ -7,8 +7,12 @@ import { useAuth } from '../contexts/AuthContext';
 import { useUpdatePost } from '../hooks/useUpdatePost';
 
 vi.mock('../services/postService');
-vi.mock('../contexts/AuthContext');
-vi.mock('../hooks/useUpdatePost');
+vi.mock('../contexts/AuthContext', () => ({
+  useAuth: vi.fn(),
+}));
+vi.mock('../hooks/useUpdatePost', () => ({
+  useUpdatePost: vi.fn(),
+}));
 
 const mockNavigate = vi.fn();
 vi.mock('react-router-dom', async () => {
