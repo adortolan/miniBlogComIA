@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { formatRelativeDate } from '../utils/formatDate';
 
 /**
@@ -8,7 +8,14 @@ import { formatRelativeDate } from '../utils/formatDate';
  * @returns {JSX.Element}
  */
 export const PostCard = ({ post }) => {
+  const navigate = useNavigate();
   const { slug, title, content, tags, imageURL, createdAt } = post;
+
+  const handleTagClick = (e, tag) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(`/?tag=${tag}`);
+  };
 
   const createExcerpt = (text, maxLength = 150) => {
     const cleanText = text.replace(/[#*`\[\]()]/g, '').trim();
@@ -50,7 +57,8 @@ export const PostCard = ({ post }) => {
               {tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full font-medium"
+                  onClick={(e) => handleTagClick(e, tag)}
+                  className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full font-medium cursor-pointer hover:bg-blue-200 transition-colors"
                 >
                   {tag}
                 </span>
