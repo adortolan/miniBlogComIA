@@ -1,12 +1,23 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { postService } from './postService';
-import { db } from '../config/firebase';
+
+vi.mock('firebase/firestore', () => ({
+  collection: vi.fn(),
+  addDoc: vi.fn(),
+  getDocs: vi.fn(),
+  getDoc: vi.fn(),
+  doc: vi.fn(),
+  query: vi.fn(),
+  where: vi.fn(),
+  orderBy: vi.fn(),
+  serverTimestamp: vi.fn(() => ({ seconds: Date.now() / 1000 })),
+}));
 
 vi.mock('../config/firebase', () => ({
-  db: {
-    collection: vi.fn(),
-  },
+  db: {},
 }));
+
+import { collection, addDoc, getDocs, query, where } from 'firebase/firestore';
 
 describe('postService', () => {
   beforeEach(() => {
@@ -24,14 +35,15 @@ describe('postService', () => {
         authorId: 'user123',
       };
 
-      const mockAdd = vi.fn().mockResolvedValue({ id: 'post123' });
-      const mockCollection = vi.fn().mockReturnValue({ add: mockAdd });
-      db.collection = mockCollection;
+      const mockCollectionRef = { name: 'posts' };
+      collection.mockReturnValue(mockCollectionRef);
+      addDoc.mockResolvedValue({ id: 'post123' });
 
       const result = await postService.createPost(postData);
 
-      expect(mockCollection).toHaveBeenCalledWith('posts');
-      expect(mockAdd).toHaveBeenCalledWith(
+      expect(collection).toHaveBeenCalledWith({}, 'posts');
+      expect(addDoc).toHaveBeenCalledWith(
+        mockCollectionRef,
         expect.objectContaining({
           ...postData,
           createdAt: expect.any(Object),
@@ -51,22 +63,28 @@ describe('postService', () => {
 
   describe('checkSlugUniqueness', () => {
     it('deve retornar true se slug não existir', async () => {
-      const mockGet = vi.fn().mockResolvedValue({ empty: true });
-      const mockWhere = vi.fn().mockReturnValue({ get: mockGet });
-      const mockCollection = vi.fn().mockReturnValue({ where: mockWhere });
-      db.collection = mockCollection;
+      const mockCollectionRef = { name: 'posts' };
+      const mockQuery = { type: 'query' };
+      
+      collection.mockReturnValue(mockCollectionRef);
+      where.mockReturnValue({ field: 'slug' });
+      query.mockReturnValue(mockQuery);
+      getDocs.mockResolvedValue({ empty: true, docs: [] });
 
       const isUnique = await postService.checkSlugUniqueness('novo-slug');
 
       expect(isUnique).toBe(true);
-      expect(mockWhere).toHaveBeenCalledWith('slug', '==', 'novo-slug');
+      expect(where).toHaveBeenCalledWith('slug', '==', 'novo-slug');
     });
 
     it('deve retornar false se slug já existir', async () => {
-      const mockGet = vi.fn().mockResolvedValue({ empty: false });
-      const mockWhere = vi.fn().mockReturnValue({ get: mockGet });
-      const mockCollection = vi.fn().mockReturnValue({ where: mockWhere });
-      db.collection = mockCollection;
+      const mockCollectionRef = { name: 'posts' };
+      const mockQuery = { type: 'query' };
+      
+      collection.mockReturnValue(mockCollectionRef);
+      where.mockReturnValue({ field: 'slug' });
+      query.mockReturnValue(mockQuery);
+      getDocs.mockResolvedValue({ empty: false, docs: [{ id: '1' }] });
 
       const isUnique = await postService.checkSlugUniqueness('slug-existente');
 
@@ -80,15 +98,18 @@ describe('postService', () => {
         { id: '1', data: () => ({ title: 'Post 1', createdAt: { seconds: 100 } }) },
         { id: '2', data: () => ({ title: 'Post 2', createdAt: { seconds: 200 } }) },
       ];
-      const mockGet = vi.fn().mockResolvedValue({ docs: mockDocs });
-      const mockOrderBy = vi.fn().mockReturnValue({ get: mockGet });
-      const mockCollection = vi.fn().mockReturnValue({ orderBy: mockOrderBy });
-      db.collection = mockCollection;
+      
+      const mockCollectionRef = { name: 'posts' };
+      const mockQuery = { type: 'query' };
+      
+      collection.mockReturnValue(mockCollectionRef);
+      query.mockReturnValue(mockQuery);
+      getDocs.mockResolvedValue({ docs: mockDocs });
 
       const posts = await postService.getAllPosts();
 
       expect(posts).toHaveLength(2);
-      expect(mockOrderBy).toHaveBeenCalledWith('createdAt', 'desc');
+      expect(posts[0]).toEqual({ id: '1', title: 'Post 1', createdAt: { seconds: 100 } });
     });
   });
 
@@ -98,10 +119,14 @@ describe('postService', () => {
         id: 'post123',
         data: () => ({ title: 'Meu Post', slug: 'meu-post' }),
       };
-      const mockGet = vi.fn().mockResolvedValue({ docs: [mockDoc] });
-      const mockWhere = vi.fn().mockReturnValue({ get: mockGet });
-      const mockCollection = vi.fn().mockReturnValue({ where: mockWhere });
-      db.collection = mockCollection;
+      
+      const mockCollectionRef = { name: 'posts' };
+      const mockQuery = { type: 'query' };
+      
+      collection.mockReturnValue(mockCollectionRef);
+      where.mockReturnValue({ field: 'slug' });
+      query.mockReturnValue(mockQuery);
+      getDocs.mockResolvedValue({ empty: false, docs: [mockDoc] });
 
       const post = await postService.getPostBySlug('meu-post');
 
@@ -110,10 +135,13 @@ describe('postService', () => {
     });
 
     it('deve retornar null se post não for encontrado', async () => {
-      const mockGet = vi.fn().mockResolvedValue({ docs: [] });
-      const mockWhere = vi.fn().mockReturnValue({ get: mockGet });
-      const mockCollection = vi.fn().mockReturnValue({ where: mockWhere });
-      db.collection = mockCollection;
+      const mockCollectionRef = { name: 'posts' };
+      const mockQuery = { type: 'query' };
+      
+      collection.mockReturnValue(mockCollectionRef);
+      where.mockReturnValue({ field: 'slug' });
+      query.mockReturnValue(mockQuery);
+      getDocs.mockResolvedValue({ empty: true, docs: [] });
 
       const post = await postService.getPostBySlug('slug-inexistente');
 

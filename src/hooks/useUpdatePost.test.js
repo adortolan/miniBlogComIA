@@ -5,7 +5,9 @@ import { postService } from '../services/postService';
 import { useAuth } from '../contexts/AuthContext';
 
 vi.mock('../services/postService');
-vi.mock('../contexts/AuthContext');
+vi.mock('../contexts/AuthContext', () => ({
+  useAuth: vi.fn(),
+}));
 
 describe('useUpdatePost', () => {
   beforeEach(() => {
@@ -74,11 +76,15 @@ describe('useUpdatePost', () => {
     const { result } = renderHook(() => useUpdatePost());
 
     await act(async () => {
-      await result.current.updatePost('post123', {
-        title: 'Título',
-        content: 'Conteúdo',
-        tags: [],
-      });
+      try {
+        await result.current.updatePost('post123', {
+          title: 'Título',
+          content: 'Conteúdo',
+          tags: [],
+        });
+      } catch (error) {
+        // Erro esperado
+      }
     });
 
     await waitFor(() => {

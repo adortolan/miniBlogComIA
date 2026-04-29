@@ -82,8 +82,8 @@ describe('PostCard', () => {
   });
 
   it('deve aplicar classes Tailwind para estilização', () => {
-    const { container } = renderPostCard();
-    const card = container.firstChild;
-    expect(card).toHaveClass('bg-white');
+    renderPostCard();
+    const article = screen.getByRole('article');
+    expect(article).toHaveClass('bg-white');
   });
 });

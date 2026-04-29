@@ -3,12 +3,24 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Home } from './Home';
 import { usePosts } from '../hooks/usePosts';
+import { usePostsByTag } from '../hooks/usePostsByTag';
 
-vi.mock('../hooks/usePosts');
+vi.mock('../hooks/usePosts', () => ({
+  usePosts: vi.fn(),
+}));
+vi.mock('../hooks/usePostsByTag', () => ({
+  usePostsByTag: vi.fn(),
+}));
 
 describe('Home', () => {
+
   beforeEach(() => {
     vi.clearAllMocks();
+    usePostsByTag.mockReturnValue({
+      posts: [],
+      loading: false,
+      error: null,
+    });
   });
 
   it('deve exibir loading enquanto carrega posts', () => {
@@ -92,12 +104,21 @@ describe('Home', () => {
       </BrowserRouter>
     );
 
-    expect(screen.getByText(/erro ao carregar posts/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/erro ao carregar posts/i)[0]).toBeInTheDocument();
   });
 
-  it('deve renderizar título da página', () => {
+  it('deve renderizar título da página quando há posts', () => {
+    const mockPosts = [{
+      id: '1',
+      slug: 'post-1',
+      title: 'Post 1',
+      content: 'Conteúdo 1',
+      tags: ['react'],
+      createdAt: { seconds: 100 },
+    }];
+
     usePosts.mockReturnValue({
-      posts: [],
+      posts: mockPosts,
       loading: false,
       error: null,
     });

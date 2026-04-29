@@ -1,12 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { CreatePost } from './CreatePost';
 import { useAuth } from '../contexts/AuthContext';
 import { useCreatePost } from '../hooks/useCreatePost';
 
-vi.mock('../contexts/AuthContext');
-vi.mock('../hooks/useCreatePost');
+vi.mock('../contexts/AuthContext', () => ({
+  useAuth: vi.fn(),
+}));
+vi.mock('../hooks/useCreatePost', () => ({
+  useCreatePost: vi.fn(),
+}));
 
 const mockNavigate = vi.fn();
 vi.mock('react-router-dom', async () => {
@@ -66,29 +70,18 @@ describe('CreatePost', () => {
       </BrowserRouter>
     );
 
-    const postData = {
-      title: 'Meu Post',
-      content: 'Conteúdo',
-      tags: ['react'],
-      imageURL: 'https://example.com/image.jpg',
-    };
+    const titleInput = screen.getByPlaceholderText(/digite o título do post/i);
+    const contentInput = screen.getByPlaceholderText(/escreva o conteúdo usando markdown/i);
+    const tagsInput = screen.getByPlaceholderText(/react, javascript, typescript/i);
+    const imageInput = screen.getByPlaceholderText(/https:\/\/exemplo.com\/imagem.jpg/i);
 
-    // Simular preenchimento e submit do formulário
-    const form = screen.getByTestId('post-form');
-    const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
-    Object.defineProperty(submitEvent, 'target', {
-      writable: false,
-      value: {
-        elements: {
-          title: { value: postData.title },
-          content: { value: postData.content },
-          tags: { value: postData.tags.join(', ') },
-          imageURL: { value: postData.imageURL },
-        },
-      },
-    });
+    fireEvent.change(titleInput, { target: { value: 'Meu Post' } });
+    fireEvent.change(contentInput, { target: { value: 'Conteúdo' } });
+    fireEvent.change(tagsInput, { target: { value: 'react' } });
+    fireEvent.change(imageInput, { target: { value: 'https://example.com/image.jpg' } });
 
-    form.dispatchEvent(submitEvent);
+    const submitButton = screen.getByRole('button', { name: /publicar post/i });
+    fireEvent.click(submitButton);
 
     await waitFor(() => {
       expect(mockCreatePost).toHaveBeenCalled();
@@ -109,10 +102,17 @@ describe('CreatePost', () => {
       </BrowserRouter>
     );
 
+    const titleInput = screen.getByPlaceholderText(/digite o título do post/i);
+    const contentInput = screen.getByPlaceholderText(/escreva o conteúdo usando markdown/i);
+
+    fireEvent.change(titleInput, { target: { value: 'Meu Post' } });
+    fireEvent.change(contentInput, { target: { value: 'Conteúdo do post' } });
+
+    const submitButton = screen.getByRole('button', { name: /publicar post/i });
+    fireEvent.click(submitButton);
+
     await waitFor(() => {
-      if (mockCreatePost.mock.calls.length > 0) {
-        expect(mockNavigate).toHaveBeenCalledWith('/posts/meu-post');
-      }
+      expect(mockNavigate).toHaveBeenCalledWith('/posts/meu-post');
     });
   });
 
