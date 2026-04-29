@@ -105,7 +105,7 @@ export const PostForm = ({ onSubmit, loading = false, initialData = null }) => {
   return (
     <form onSubmit={handleSubmit} data-testid="post-form" className="space-y-6">
       <div>
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="title" className="block text-sm font-medium text-gray-900 mb-2">
           Título *
         </label>
         <input
@@ -123,7 +123,7 @@ export const PostForm = ({ onSubmit, loading = false, initialData = null }) => {
       </div>
 
       <div>
-        <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="content" className="block text-sm font-medium text-gray-900 mb-2">
           Conteúdo * (Markdown)
         </label>
         <textarea
@@ -138,13 +138,13 @@ export const PostForm = ({ onSubmit, loading = false, initialData = null }) => {
           placeholder="Escreva o conteúdo usando Markdown..."
         />
         {errors.content && <p className="mt-1 text-sm text-red-600">{errors.content}</p>}
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-gray-600">
           Suporta Markdown: títulos (#), listas, código, links, etc.
         </p>
       </div>
 
       <div>
-        <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="tags" className="block text-sm font-medium text-gray-900 mb-2">
           Tags
         </label>
         <input
@@ -156,13 +156,13 @@ export const PostForm = ({ onSubmit, loading = false, initialData = null }) => {
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           placeholder="react, javascript, typescript (separadas por vírgula)"
         />
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-gray-600">
           Separe as tags por vírgula. Ex: react, javascript, tutorial
         </p>
       </div>
 
       <div>
-        <label htmlFor="imageURL" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="imageURL" className="block text-sm font-medium text-gray-900 mb-2">
           URL da Imagem de Capa
         </label>
         <input
@@ -180,7 +180,7 @@ export const PostForm = ({ onSubmit, loading = false, initialData = null }) => {
 
         {showPreview && formData.imageURL && (
           <div className="mt-4">
-            <p className="text-sm font-medium text-gray-700 mb-2">Preview:</p>
+            <p className="text-sm font-medium text-gray-900 mb-2">Preview:</p>
             <img
               src={formData.imageURL}
               alt="Preview da imagem de capa"
