@@ -114,7 +114,7 @@ export const PostForm = ({ onSubmit, loading = false, initialData = null }) => {
           name="title"
           value={formData.title}
           onChange={handleChange}
-          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500 ${
             errors.title ? 'border-red-500' : 'border-gray-300'
           }`}
           placeholder="Digite o título do post"
@@ -132,7 +132,7 @@ export const PostForm = ({ onSubmit, loading = false, initialData = null }) => {
           value={formData.content}
           onChange={handleChange}
           rows={12}
-          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500 ${
             errors.content ? 'border-red-500' : 'border-gray-300'
           }`}
           placeholder="Escreva o conteúdo usando Markdown..."
@@ -153,7 +153,7 @@ export const PostForm = ({ onSubmit, loading = false, initialData = null }) => {
           name="tags"
           value={formData.tags}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500"
           placeholder="react, javascript, typescript (separadas por vírgula)"
         />
         <p className="mt-1 text-sm text-gray-600">
@@ -171,7 +171,7 @@ export const PostForm = ({ onSubmit, loading = false, initialData = null }) => {
           name="imageURL"
           value={formData.imageURL}
           onChange={handleChange}
-          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500 ${
             errors.imageURL ? 'border-red-500' : 'border-gray-300'
           }`}
           placeholder="https://exemplo.com/imagem.jpg"
