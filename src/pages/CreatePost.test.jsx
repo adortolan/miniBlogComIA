@@ -73,7 +73,7 @@ describe('CreatePost', () => {
     const titleInput = screen.getByPlaceholderText(/digite o título do post/i);
     const contentInput = screen.getByPlaceholderText(/escreva o conteúdo usando markdown/i);
     const tagsInput = screen.getByPlaceholderText(/react, javascript, typescript/i);
-    const imageInput = screen.getByPlaceholderText(/https:\/\/exemplo.com\/imagem.jpg/i);
+    const imageInput = screen.getByPlaceholderText(/^https:\/\/exemplo\.com\/imagem\.jpg$/i);
 
     fireEvent.change(titleInput, { target: { value: 'Meu Post' } });
     fireEvent.change(contentInput, { target: { value: 'Conteúdo' } });
