@@ -33,11 +33,16 @@ export const useUpdatePost = () => {
       if (slug !== postData.oldSlug) {
         let isUnique = await postService.checkSlugUniqueness(slug, postId);
         let counter = 1;
+        const MAX_ATTEMPTS = 100;
 
-        while (!isUnique) {
+        while (!isUnique && counter < MAX_ATTEMPTS) {
           slug = `${generateSlug(postData.title)}-${counter}`;
           isUnique = await postService.checkSlugUniqueness(slug, postId);
           counter++;
+        }
+
+        if (!isUnique) {
+          throw new Error('Não foi possível gerar um slug único. Tente um título diferente.');
         }
       }
 

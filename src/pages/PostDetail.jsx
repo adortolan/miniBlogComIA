@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import { postService } from '../services/postService';
 import { useAuth } from '../contexts/AuthContext';
 import { useDeletePost } from '../hooks/useDeletePost';
+import { useUserRole } from '../hooks/useUserRole';
 import { formatDate } from '../utils/formatDate';
 import { DeleteConfirmModal } from '../components/DeleteConfirmModal';
 
@@ -17,6 +18,7 @@ export const PostDetail = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { deletePost, loading: deleting } = useDeletePost();
+  const { isAdmin } = useUserRole(user?.uid);
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -49,7 +51,7 @@ export const PostDetail = () => {
 
   const canEditOrDelete = () => {
     if (!user || !post) return false;
-    return user.uid === post.authorId || user.role === 'admin';
+    return user.uid === post.authorId || isAdmin;
   };
 
   const handleEdit = () => {
@@ -142,9 +144,9 @@ export const PostDetail = () => {
 
             {post.tags && post.tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-6">
-                {post.tags.map((tag, index) => (
+                {post.tags.map((tag) => (
                   <span
-                    key={index}
+                    key={tag}
                     className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full font-medium cursor-pointer hover:bg-blue-200 transition-colors"
                     onClick={() => navigate(`/?tag=${tag}`)}
                   >

@@ -55,9 +55,9 @@ export const PostCard = ({ post }) => {
 
           {tags && tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-4">
-              {tags.map((tag, index) => (
+              {tags.map((tag) => (
                 <span
-                  key={index}
+                  key={tag}
                   onClick={(e) => handleTagClick(e, tag)}
                   className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full font-medium cursor-pointer hover:bg-blue-200 transition-colors"
                 >

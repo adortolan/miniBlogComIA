@@ -78,18 +78,28 @@ export const postService = {
   /**
    * Inscreve-se para atualizações em tempo real dos posts
    * @param {Function} callback - Função chamada quando há atualizações
+   * @param {Function} errorCallback - Função chamada quando há erro (opcional)
    * @returns {Function} - Função para cancelar inscrição
    */
-  subscribeToPostsRealtime(callback) {
+  subscribeToPostsRealtime(callback, errorCallback = null) {
     const q = query(collection(db, POSTS_COLLECTION), orderBy('createdAt', 'desc'));
 
-    return onSnapshot(q, (snapshot) => {
-      const posts = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      callback(posts);
-    });
+    return onSnapshot(
+      q,
+      (snapshot) => {
+        const posts = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        callback(posts);
+      },
+      (error) => {
+        console.error('Erro na subscription de posts:', error);
+        if (errorCallback) {
+          errorCallback(error);
+        }
+      }
+    );
   },
 
   /**

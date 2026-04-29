@@ -15,11 +15,17 @@ export const usePosts = (options = {}) => {
 
   useEffect(() => {
     if (realtime) {
-      const unsubscribe = postService.subscribeToPostsRealtime((updatedPosts) => {
-        setPosts(updatedPosts);
-        setLoading(false);
-        setError(null);
-      });
+      const unsubscribe = postService.subscribeToPostsRealtime(
+        (updatedPosts) => {
+          setPosts(updatedPosts);
+          setLoading(false);
+          setError(null);
+        },
+        (err) => {
+          setError(err.message);
+          setLoading(false);
+        }
+      );
 
       return () => unsubscribe();
     } else {

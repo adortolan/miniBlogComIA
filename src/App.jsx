@@ -25,7 +25,7 @@ function App() {
           
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/admin/posts/new" element={<CreatePost />} />
+            <Route path="/criar-post" element={<CreatePost />} />
             <Route path="/admin/posts/edit/:id" element={<EditPost />} />
           </Route>
 

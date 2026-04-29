@@ -5,6 +5,7 @@ import { EditPost } from './EditPost';
 import { postService } from '../services/postService';
 import { useAuth } from '../contexts/AuthContext';
 import { useUpdatePost } from '../hooks/useUpdatePost';
+import { useUserRole } from '../hooks/useUserRole';
 
 vi.mock('../services/postService');
 vi.mock('../contexts/AuthContext', () => ({
@@ -12,6 +13,9 @@ vi.mock('../contexts/AuthContext', () => ({
 }));
 vi.mock('../hooks/useUpdatePost', () => ({
   useUpdatePost: vi.fn(),
+}));
+vi.mock('../hooks/useUserRole', () => ({
+  useUserRole: vi.fn(),
 }));
 
 const mockNavigate = vi.fn();
@@ -37,12 +41,18 @@ describe('EditPost', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     useAuth.mockReturnValue({
-      user: { uid: 'user123', role: 'user' },
+      user: { uid: 'user123' },
     });
     useUpdatePost.mockReturnValue({
       updatePost: vi.fn(),
       loading: false,
       error: null,
+    });
+    useUserRole.mockReturnValue({
+      role: 'reader',
+      loading: false,
+      error: null,
+      isAdmin: false,
     });
   });
 
@@ -81,7 +91,13 @@ describe('EditPost', () => {
   it('deve redirecionar para home se usuário não for autor ou admin', async () => {
     postService.getPostById.mockResolvedValue(mockPost);
     useAuth.mockReturnValue({
-      user: { uid: 'other-user', role: 'user' },
+      user: { uid: 'other-user' },
+    });
+    useUserRole.mockReturnValue({
+      role: 'reader',
+      loading: false,
+      error: null,
+      isAdmin: false,
     });
 
     renderEditPost();
@@ -94,7 +110,13 @@ describe('EditPost', () => {
   it('deve permitir admin editar post de outro usuário', async () => {
     postService.getPostById.mockResolvedValue(mockPost);
     useAuth.mockReturnValue({
-      user: { uid: 'admin-user', role: 'admin' },
+      user: { uid: 'admin-user' },
+    });
+    useUserRole.mockReturnValue({
+      role: 'admin',
+      loading: false,
+      error: null,
+      isAdmin: true,
     });
 
     renderEditPost();

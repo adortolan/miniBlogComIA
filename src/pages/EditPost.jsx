@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useUpdatePost } from '../hooks/useUpdatePost';
+import { useUserRole } from '../hooks/useUserRole';
 import { postService } from '../services/postService';
 import { PostForm } from '../components/PostForm';
 
@@ -15,6 +16,7 @@ export const EditPost = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { updatePost, loading: updating, error: updateError } = useUpdatePost();
+  const { isAdmin, loading: loadingRole } = useUserRole(user?.uid);
   
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -37,14 +39,6 @@ export const EditPost = () => {
           setError('Post não encontrado');
           setPost(null);
         } else {
-          // Verificar permissão
-          const canEdit = user.uid === fetchedPost.authorId || user.role === 'admin';
-          
-          if (!canEdit) {
-            navigate('/');
-            return;
-          }
-          
           setPost(fetchedPost);
         }
       } catch (err) {
@@ -57,6 +51,16 @@ export const EditPost = () => {
 
     fetchPost();
   }, [id, user, navigate]);
+
+  useEffect(() => {
+    if (post && !loadingRole && user) {
+      const canEdit = user.uid === post.authorId || isAdmin;
+      
+      if (!canEdit) {
+        navigate('/');
+      }
+    }
+  }, [post, loadingRole, isAdmin, user, navigate]);
 
   const handleSubmit = async (postData) => {
     try {
@@ -74,7 +78,7 @@ export const EditPost = () => {
     return null;
   }
 
-  if (loading) {
+  if (loading || loadingRole) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center" data-testid="loading-indicator">

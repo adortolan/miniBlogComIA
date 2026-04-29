@@ -4,10 +4,18 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { PostDetail } from './PostDetail';
 import { postService } from '../services/postService';
 import { useAuth } from '../contexts/AuthContext';
+import { useUserRole } from '../hooks/useUserRole';
+import { useDeletePost } from '../hooks/useDeletePost';
 
 vi.mock('../services/postService');
 vi.mock('../contexts/AuthContext', () => ({
   useAuth: vi.fn(),
+}));
+vi.mock('../hooks/useUserRole', () => ({
+  useUserRole: vi.fn(),
+}));
+vi.mock('../hooks/useDeletePost', () => ({
+  useDeletePost: vi.fn(),
 }));
 
 describe('PostDetail', () => {
@@ -26,6 +34,17 @@ describe('PostDetail', () => {
     vi.clearAllMocks();
     useAuth.mockReturnValue({
       user: null,
+    });
+    useUserRole.mockReturnValue({
+      role: null,
+      loading: false,
+      error: null,
+      isAdmin: false,
+    });
+    useDeletePost.mockReturnValue({
+      deletePost: vi.fn(),
+      loading: false,
+      error: null,
     });
   });
 
@@ -118,7 +137,13 @@ describe('PostDetail', () => {
   it('deve exibir botões de editar e excluir para o autor', async () => {
     postService.getPostBySlug.mockResolvedValue(mockPost);
     useAuth.mockReturnValue({
-      user: { uid: 'user123', role: 'user' },
+      user: { uid: 'user123' },
+    });
+    useUserRole.mockReturnValue({
+      role: 'reader',
+      loading: false,
+      error: null,
+      isAdmin: false,
     });
 
     renderPostDetail();
@@ -132,7 +157,13 @@ describe('PostDetail', () => {
   it('deve exibir botões para admin mesmo não sendo autor', async () => {
     postService.getPostBySlug.mockResolvedValue(mockPost);
     useAuth.mockReturnValue({
-      user: { uid: 'admin456', role: 'admin' },
+      user: { uid: 'admin456' },
+    });
+    useUserRole.mockReturnValue({
+      role: 'admin',
+      loading: false,
+      error: null,
+      isAdmin: true,
     });
 
     renderPostDetail();
@@ -146,7 +177,13 @@ describe('PostDetail', () => {
   it('não deve exibir botões para usuário não autor ou não admin', async () => {
     postService.getPostBySlug.mockResolvedValue(mockPost);
     useAuth.mockReturnValue({
-      user: { uid: 'other789', role: 'user' },
+      user: { uid: 'other789' },
+    });
+    useUserRole.mockReturnValue({
+      role: 'reader',
+      loading: false,
+      error: null,
+      isAdmin: false,
     });
 
     renderPostDetail();

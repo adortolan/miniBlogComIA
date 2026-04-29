@@ -25,7 +25,7 @@ export const PostForm = ({ onSubmit, loading = false, initialData = null }) => {
       setFormData({
         title: initialData.title || '',
         content: initialData.content || '',
-        tags: initialData.tags ? initialData.tags.join(', ') : '',
+        tags: (initialData.tags && Array.isArray(initialData.tags)) ? initialData.tags.join(', ') : '',
         imageURL: initialData.imageURL || '',
       });
       if (initialData.imageURL) {
@@ -98,7 +98,7 @@ export const PostForm = ({ onSubmit, loading = false, initialData = null }) => {
       title: formData.title.trim(),
       content: formData.content.trim(),
       tags,
-      imageURL: formData.imageURL.trim(),
+      imageURL: formData.imageURL.trim() || null,
     });
   };
 
