@@ -7,6 +7,7 @@ import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import AdminPanel from './pages/AdminPanel'
 import { CreatePost } from './pages/CreatePost'
+import { EditPost } from './pages/EditPost'
 import PrivateRoute from './components/PrivateRoute'
 import AdminRoute from './components/AdminRoute'
 
@@ -25,6 +26,7 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/admin/posts/new" element={<CreatePost />} />
+            <Route path="/admin/posts/edit/:id" element={<EditPost />} />
           </Route>
 
           <Route element={<AdminRoute />}>
