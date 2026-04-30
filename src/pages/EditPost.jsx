@@ -80,10 +80,10 @@ export const EditPost = () => {
 
   if (loading || loadingRole) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-dark-800 px-4">
         <div className="text-center" data-testid="loading-indicator">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-          <p className="text-gray-600 text-lg">Carregando post...</p>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-400 mb-4"></div>
+          <p className="text-gray-400 text-lg">Carregando post...</p>
         </div>
       </div>
     );
@@ -91,17 +91,17 @@ export const EditPost = () => {
 
   if (error || !post) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-8 max-w-md text-center">
-          <h2 className="text-red-800 text-2xl font-bold mb-2">
+      <div className="min-h-screen flex items-center justify-center bg-dark-800 px-4">
+        <div className="bg-dark-700 border border-dark-600 rounded-xl p-8 max-w-md text-center">
+          <h2 className="text-white text-2xl font-bold mb-2">
             {error || 'Post não encontrado'}
           </h2>
-          <p className="text-red-700 mb-4">
+          <p className="text-gray-400 mb-4">
             O post que você está tentando editar não existe ou foi removido.
           </p>
           <button
             onClick={() => navigate('/')}
-            className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+            className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
           >
             Voltar para Home
           </button>
@@ -111,30 +111,30 @@ export const EditPost = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">Editar Post</h1>
-        <p className="text-gray-600">
-          Atualize as informações do seu post
-        </p>
-      </div>
-
-      {updateError && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-800 text-sm font-medium">
-            Erro ao atualizar post: {updateError}
+    <div className="min-h-screen flex items-center justify-center bg-dark-800 px-4 py-8">
+      <div className="max-w-4xl w-full space-y-8 bg-dark-700 p-8 rounded-xl border border-dark-600">
+        <div>
+          <h2 className="text-center text-3xl font-bold text-white">
+            Editar Post
+          </h2>
+          <p className="mt-2 text-center text-sm text-gray-400">
+            Atualize as informações do seu post
           </p>
         </div>
-      )}
 
-      {updating && (
-        <div className="mb-6 flex items-center justify-center" data-testid="loading-indicator">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <span className="ml-3 text-gray-600">Atualizando post...</span>
-        </div>
-      )}
+        {updateError && (
+          <div className="bg-red-900/30 border border-red-700 text-red-400 px-4 py-3 rounded relative">
+            <span className="block sm:inline">Erro ao atualizar post: {updateError}</span>
+          </div>
+        )}
 
-      <div className="bg-white rounded-lg shadow-md p-6">
+        {updating && (
+          <div className="flex items-center justify-center" data-testid="loading-indicator">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-400"></div>
+            <span className="ml-3 text-gray-400">Atualizando post...</span>
+          </div>
+        )}
+
         <PostForm
           onSubmit={handleSubmit}
           loading={updating}

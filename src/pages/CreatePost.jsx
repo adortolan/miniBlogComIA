@@ -34,28 +34,30 @@ export const CreatePost = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">Criar Novo Post</h1>
-        <p className="text-gray-600">
-          Compartilhe suas ideias e conhecimentos com a comunidade
-        </p>
-      </div>
-
-      {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-800 text-sm font-medium">Erro ao criar post: {error}</p>
+    <div className="min-h-screen flex items-center justify-center bg-dark-800 px-4 py-8">
+      <div className="max-w-4xl w-full space-y-8 bg-dark-700 p-8 rounded-xl border border-dark-600">
+        <div>
+          <h2 className="text-center text-3xl font-bold text-white">
+            Criar Novo Post
+          </h2>
+          <p className="mt-2 text-center text-sm text-gray-400">
+            Compartilhe suas ideias e conhecimentos com a comunidade
+          </p>
         </div>
-      )}
 
-      {loading && (
-        <div className="mb-6 flex items-center justify-center" data-testid="loading-indicator">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <span className="ml-3 text-gray-600">Criando post...</span>
-        </div>
-      )}
+        {error && (
+          <div className="bg-red-900/30 border border-red-700 text-red-400 px-4 py-3 rounded relative">
+            <span className="block sm:inline">Erro ao criar post: {error}</span>
+          </div>
+        )}
 
-      <div className="bg-white rounded-lg shadow-md p-6">
+        {loading && (
+          <div className="flex items-center justify-center" data-testid="loading-indicator">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-400"></div>
+            <span className="ml-3 text-gray-400">Criando post...</span>
+          </div>
+        )}
+
         <PostForm onSubmit={handleSubmit} loading={loading} />
       </div>
     </div>
