@@ -36,12 +36,26 @@ export const postService = {
       updatedAt: serverTimestamp(),
     };
 
-    const docRef = await addDoc(collection(db, POSTS_COLLECTION), postToCreate);
+    try {
+      const docRef = await addDoc(collection(db, POSTS_COLLECTION), postToCreate);
 
-    return {
-      id: docRef.id,
-      ...postData,
-    };
+      return {
+        id: docRef.id,
+        ...postData,
+      };
+    } catch (error) {
+      console.error('Erro ao criar post:', error);
+      
+      if (error.code === 'permission-denied') {
+        throw new Error('Você não tem permissão para criar posts. Verifique se está autenticado.');
+      }
+      
+      if (error.message?.includes('CORS') || error.code === 'unavailable') {
+        throw new Error('Erro de conexão com o Firebase. Verifique suas variáveis de ambiente (.env) e a configuração do Firebase.');
+      }
+      
+      throw error;
+    }
   },
 
   /**

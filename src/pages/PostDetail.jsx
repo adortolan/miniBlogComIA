@@ -74,10 +74,10 @@ export const PostDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-dark-800">
         <div className="text-center" data-testid="loading-indicator">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-          <p className="text-gray-600 text-lg">Carregando post...</p>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-400 mb-4"></div>
+          <p className="text-gray-400 text-lg">Carregando post...</p>
         </div>
       </div>
     );
@@ -85,8 +85,8 @@ export const PostDetail = () => {
 
   if (error || !post) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-8 max-w-md text-center">
+      <div className="min-h-screen flex items-center justify-center bg-dark-800">
+        <div className="bg-red-900/30 border border-red-700 rounded-lg p-8 max-w-md text-center">
           <svg
             className="mx-auto h-16 w-16 text-red-400 mb-4"
             fill="none"
@@ -100,15 +100,15 @@ export const PostDetail = () => {
               d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
             />
           </svg>
-          <h2 className="text-red-800 text-2xl font-bold mb-2">
+          <h2 className="text-red-400 text-2xl font-bold mb-2">
             {error || 'Post não encontrado'}
           </h2>
-          <p className="text-red-700 mb-4">
+          <p className="text-red-300 mb-4">
             O post que você está procurando não existe ou foi removido.
           </p>
           <button
             onClick={() => navigate('/')}
-            className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+            className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
           >
             Voltar para Home
           </button>
@@ -118,10 +118,10 @@ export const PostDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-dark-800 py-8">
       <article className="max-w-4xl mx-auto px-4">
         {post.imageURL && (
-          <div className="mb-8 rounded-lg overflow-hidden shadow-lg">
+          <div className="mb-8 rounded-lg overflow-hidden border border-dark-600">
             <img
               src={post.imageURL}
               alt={post.title}
@@ -130,13 +130,13 @@ export const PostDetail = () => {
           </div>
         )}
 
-        <div className="bg-white rounded-lg shadow-md p-8">
+        <div className="bg-dark-700 rounded-lg border border-dark-600 p-8">
           <header className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            <h1 className="text-4xl font-bold text-white mb-4">
               {post.title}
             </h1>
 
-            <div className="flex items-center justify-between text-sm text-gray-600 mb-6">
+            <div className="flex items-center justify-between text-sm text-gray-400 mb-6">
               <span data-testid="post-date">
                 {formatDate(post.createdAt)}
               </span>
@@ -147,7 +147,7 @@ export const PostDetail = () => {
                 {post.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full font-medium cursor-pointer hover:bg-blue-200 transition-colors"
+                    className="px-3 py-1 bg-purple-900/30 text-purple-300 text-sm rounded-full font-medium cursor-pointer hover:bg-purple-900/50 transition-colors border border-purple-700"
                     onClick={() => navigate(`/?tag=${tag}`)}
                   >
                     {tag}
@@ -157,10 +157,10 @@ export const PostDetail = () => {
             )}
 
             {canEditOrDelete() && (
-              <div className="flex gap-3 pt-4 border-t border-gray-200">
+              <div className="flex gap-3 pt-4 border-t border-dark-600">
                 <button
                   onClick={handleEdit}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                  className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium"
                 >
                   Editar
                 </button>
@@ -174,7 +174,7 @@ export const PostDetail = () => {
             )}
           </header>
 
-          <div className="prose prose-lg max-w-none">
+          <div className="prose prose-lg prose-invert max-w-none">
             <ReactMarkdown>{post.content}</ReactMarkdown>
           </div>
         </div>

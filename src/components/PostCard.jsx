@@ -30,7 +30,7 @@ export const PostCard = ({ post }) => {
 
   return (
     <Link to={`/posts/${slug}`} className="block">
-      <article className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+      <article className="bg-dark-700 rounded-lg border border-dark-600 overflow-hidden hover:border-primary-400 transition-all duration-300">
         {imageURL && (
           <div className="h-48 overflow-hidden">
             <img
@@ -42,12 +42,12 @@ export const PostCard = ({ post }) => {
         )}
 
         <div className="p-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors">
+          <h2 className="text-2xl font-bold text-white mb-3 hover:text-primary-400 transition-colors">
             {title}
           </h2>
 
           <p
-            className="text-gray-700 mb-4 leading-relaxed"
+            className="text-gray-400 mb-4 leading-relaxed"
             data-testid="post-excerpt"
           >
             {createExcerpt(content)}
@@ -59,7 +59,7 @@ export const PostCard = ({ post }) => {
                 <span
                   key={tag}
                   onClick={(e) => handleTagClick(e, tag)}
-                  className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full font-medium cursor-pointer hover:bg-blue-200 transition-colors"
+                  className="px-3 py-1 bg-purple-900/30 text-purple-300 text-sm rounded-full font-medium cursor-pointer hover:bg-purple-900/50 transition-colors border border-purple-700"
                 >
                   {tag}
                 </span>
@@ -71,7 +71,7 @@ export const PostCard = ({ post }) => {
             <span data-testid="post-date">
               {formatRelativeDate(createdAt)}
             </span>
-            <span className="text-blue-600 font-medium hover:underline">
+            <span className="text-primary-400 font-medium hover:text-primary-300 transition-colors">
               Ler mais →
             </span>
           </div>
