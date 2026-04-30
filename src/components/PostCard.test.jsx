@@ -84,6 +84,6 @@ describe('PostCard', () => {
   it('deve aplicar classes Tailwind para estilização', () => {
     renderPostCard();
     const article = screen.getByRole('article');
-    expect(article).toHaveClass('bg-white');
+    expect(article).toHaveClass('bg-dark-700');
   });
 });
