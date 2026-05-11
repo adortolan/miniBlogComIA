@@ -109,6 +109,15 @@ export const postService = {
       },
       (error) => {
         console.error('Erro na subscription de posts:', error);
+        
+        if (error.message?.includes('CORS') || error.code === 'unavailable') {
+          const corsError = new Error('Erro de conexão com o Firebase. Verifique suas variáveis de ambiente (.env) e a configuração do Firebase.');
+          if (errorCallback) {
+            errorCallback(corsError);
+          }
+          return;
+        }
+        
         if (errorCallback) {
           errorCallback(error);
         }
