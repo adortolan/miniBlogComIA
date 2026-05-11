@@ -1,16 +1,7 @@
 // Firebase Types
-export interface FirebaseTimestamp {
-  seconds: number;
-  nanoseconds: number;
-}
+import { FirebaseUser, FirebaseTimestamp } from './firebase';
 
-export interface FirebaseUser {
-  uid: string;
-  email: string | null;
-  displayName: string | null;
-  photoURL: string | null;
-  emailVerified: boolean;
-}
+export type { FirebaseUser, FirebaseTimestamp };
 
 // Domain Types
 export interface Post {
@@ -21,6 +12,8 @@ export interface Post {
   tags: string[];
   imageURL?: string;
   authorId: string;
+  authorName?: string;
+  authorPhotoURL?: string;
   createdAt: FirebaseTimestamp;
   updatedAt: FirebaseTimestamp;
 }
@@ -48,7 +41,7 @@ export interface AuthContextType {
 
 // Service Types
 export interface PostService {
-  createPost(postData: CreatePostDTO): Promise<Post>;
+  createPost(postData: CreatePostDTO & { authorId: string; slug: string }): Promise<Omit<Post, 'createdAt' | 'updatedAt'>>;
   getAllPosts(): Promise<Post[]>;
   getPostById(id: string): Promise<Post | null>;
   getPostBySlug(slug: string): Promise<Post | null>;
@@ -66,13 +59,13 @@ export interface PostService {
 export interface UsePostsResult {
   posts: Post[];
   loading: boolean;
-  error: string | null;
+  error: Error | null;
 }
 
 export interface UseMutationResult<T> {
   mutate: (data: T) => Promise<void>;
   loading: boolean;
-  error: string | null;
+  error: Error | null;
 }
 
 // Component Props Types
