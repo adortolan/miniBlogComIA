@@ -45,15 +45,17 @@ export const postService = {
       };
     } catch (error) {
       console.error('Erro ao criar post:', error);
-      
+      console.error('Error code:', error.code);
+      console.error('Error message:', error.message);
+
       if (error.code === 'permission-denied') {
         throw new Error('Você não tem permissão para criar posts. Verifique se está autenticado.');
       }
-      
-      if (error.message?.includes('CORS') || error.code === 'unavailable') {
-        throw new Error('Erro de conexão com o Firebase. Verifique suas variáveis de ambiente (.env) e a configuração do Firebase.');
+
+      if (error.code === 'unavailable' || error.message?.includes('CORS') || error.message?.includes('fetch')) {
+        throw new Error('Erro de conexão com o Firebase. Verifique suas variáveis de ambiente (.env) e a configuração do Firebase. Erro: ' + (error.message || 'Unknown error'));
       }
-      
+
       throw error;
     }
   },
@@ -96,33 +98,53 @@ export const postService = {
    * @returns {Function} - Função para cancelar inscrição
    */
   subscribeToPostsRealtime(callback, errorCallback = null) {
-    const q = query(collection(db, POSTS_COLLECTION), orderBy('createdAt', 'desc'));
+    try {
+      const q = query(collection(db, POSTS_COLLECTION), orderBy('createdAt', 'desc'));
 
-    return onSnapshot(
-      q,
-      (snapshot) => {
-        const posts = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        callback(posts);
-      },
-      (error) => {
-        console.error('Erro na subscription de posts:', error);
-        
-        if (error.message?.includes('CORS') || error.code === 'unavailable') {
-          const corsError = new Error('Erro de conexão com o Firebase. Verifique suas variáveis de ambiente (.env) e a configuração do Firebase.');
-          if (errorCallback) {
-            errorCallback(corsError);
+      return onSnapshot(
+        q,
+        (snapshot) => {
+          const posts = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          callback(posts);
+        },
+        (error) => {
+          console.error('Erro na subscription de posts:', error);
+          console.error('Error code:', error.code);
+          console.error('Error message:', error.message);
+
+          // Handle various Firebase/CORS errors
+          if (error.code === 'permission-denied') {
+            const permissionError = new Error('Você não tem permissão para acessar os posts. Verifique se está autenticado.');
+            if (errorCallback) {
+              errorCallback(permissionError);
+            }
+            return;
           }
-          return;
+
+          if (error.code === 'unavailable' || error.message?.includes('CORS') || error.message?.includes('fetch')) {
+            const corsError = new Error('Erro de conexão com o Firebase. Verifique suas variáveis de ambiente (.env) e a configuração do Firebase. Erro: ' + (error.message || 'Unknown error'));
+            if (errorCallback) {
+              errorCallback(corsError);
+            }
+            return;
+          }
+
+          if (errorCallback) {
+            errorCallback(error);
+          }
         }
-        
-        if (errorCallback) {
-          errorCallback(error);
-        }
+      );
+    } catch (error) {
+      console.error('Erro ao configurar subscription de posts:', error);
+      const initError = new Error('Erro ao inicializar conexão com o Firebase: ' + error.message);
+      if (errorCallback) {
+        errorCallback(initError);
       }
-    );
+      return () => {}; // Return noop unsubscribe function
+    }
   },
 
   /**
