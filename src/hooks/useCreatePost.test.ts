@@ -88,7 +88,7 @@ describe('useCreatePost', () => {
           content: 'Conteúdo',
           tags: [],
         });
-      } catch (error) {
+      } catch {
         // Erro esperado
       }
     });
@@ -108,7 +108,7 @@ describe('useCreatePost', () => {
           content: 'Conteúdo sem título',
           tags: [],
         });
-      } catch (error) {
+      } catch {
         // Erro esperado
       }
     });

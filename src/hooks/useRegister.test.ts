@@ -8,13 +8,14 @@ const mockSetDoc = vi.fn();
 const mockDoc = vi.fn();
 
 vi.mock('firebase/auth', () => ({
-  createUserWithEmailAndPassword: (...args: any[]) => mockCreateUserWithEmailAndPassword(...args),
-  updateProfile: (...args: any[]) => mockUpdateProfile(...args),
+  createUserWithEmailAndPassword: (...args: unknown[]) => mockCreateUserWithEmailAndPassword(...args),
+  updateProfile: (...args: unknown[]) => mockUpdateProfile(...args),
+  setDoc: (...args: unknown[]) => mockSetDoc(...args),
 }));
 
 vi.mock('firebase/firestore', () => ({
-  doc: (...args: any[]) => mockDoc(...args),
-  setDoc: (...args: any[]) => mockSetDoc(...args),
+  doc: (...args: unknown[]) => mockDoc(...args),
+  setDoc: (...args: unknown[]) => mockSetDoc(...args),
 }));
 
 vi.mock('../config/firebase', () => ({
@@ -155,7 +156,7 @@ describe('useRegister', () => {
     await act(async () => {
       try {
         await result.current.register('Test User', 'test@test.com', 'password123');
-      } catch (error) {
+      } catch {
         // Erro esperado
       }
     });
@@ -191,7 +192,7 @@ describe('useRegister', () => {
     await act(async () => {
       try {
         await result.current.register('Test User', 'existing@test.com', 'password123');
-      } catch (error) {
+      } catch {
         // Primeiro erro esperado
       }
     });

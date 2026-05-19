@@ -12,7 +12,7 @@ const createMockTimestamp = (seconds: number, nanoseconds: number) => ({
   nanoseconds,
   toDate: () => new Date(seconds * 1000 + nanoseconds / 1000000),
   toMillis: () => seconds * 1000 + nanoseconds / 1000000,
-  isEqual: (other: any) => seconds === other.seconds && nanoseconds === other.nanoseconds,
+  isEqual: (other: { seconds: number; nanoseconds: number }) => seconds === other.seconds && nanoseconds === other.nanoseconds,
   toJSON: () => ({ seconds, nanoseconds }),
   valueOf: () => (seconds * 1000 + nanoseconds / 1000000).toString(),
 });

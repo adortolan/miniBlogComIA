@@ -5,7 +5,7 @@ import { useLogout } from './useLogout';
 const mockSignOut = vi.fn();
 
 vi.mock('firebase/auth', () => ({
-  signOut: (...args: any[]) => mockSignOut(...args),
+  signOut: (...args: unknown[]) => mockSignOut(...args),
 }));
 
 vi.mock('../config/firebase', () => ({

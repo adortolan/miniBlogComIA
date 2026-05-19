@@ -54,7 +54,7 @@ describe('useDeletePost', () => {
     await act(async () => {
       try {
         await result.current.deletePost('post123');
-      } catch (error) {
+      } catch {
         // Erro esperado
       }
     });
@@ -75,7 +75,7 @@ describe('useDeletePost', () => {
     await act(async () => {
       try {
         await result.current.deletePost('post123');
-      } catch (error) {
+      } catch {
         // Primeiro erro esperado
       }
     });
