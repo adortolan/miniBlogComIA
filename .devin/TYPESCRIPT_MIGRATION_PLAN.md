@@ -9,9 +9,9 @@ Este documento descreve o plano automatizado para migração do MiniBlog de Java
 |------|-----------|--------|----------|
 | 1 | Preparação e Configuração | **Concluída** | `tsconfig.json`, `tsconfig.node.json`, `vite.config.ts` criados/atualizados |
 | 2 | Definição de Tipos Base | **Concluída** | `src/types/index.ts` e `src/types/firebase.ts` criados |
-| 3 | Migração de Utils e Config | **Concluída** | `firebase.ts`, `formatDate.ts`, `generateSlug.ts`, `generateSlug.test.ts` migrados; commit na `feature/ts-phase-3-utils` |
-| 4 | Migração de Services | **Não iniciada** | `postService.js` e `postService.test.js` ainda em JS |
-| 5 | Migração de Contexts | **Não iniciada** | `AuthContext.jsx` e `AuthContext.test.jsx` ainda em JSX |
+| 3 | Migração de Utils e Config | **Concluída** | `firebase.ts`, `formatDate.ts`, `generateSlug.ts`, `generateSlug.test.ts` migrados |
+| 4 | Migração de Services | **Concluída** | `postService.ts` e `postService.test.ts` migrados |
+| 5 | Migração de Contexts | **Concluída** | `AuthContext.tsx` e `AuthContext.test.tsx` migrados; commit na `feature/ts-phase-5-contexts` |
 | 6 | Migração de Hooks | **Não iniciada** | Todos os 9 hooks e seus testes ainda em `.js` |
 | 7 | Migração de Components | **Não iniciada** | Todos os 10 components e seus testes ainda em `.jsx` |
 | 8 | Migração de Pages | **Não iniciada** | Todas as 8 pages e seus testes ainda em `.jsx` |
@@ -22,11 +22,11 @@ Este documento descreve o plano automatizado para migração do MiniBlog de Java
 | 13 | Documentação e Finalização | **Não iniciada** | — |
 
 ### Resumo
-- **Concluídas:** 2 fases (1, 2)
-- **Parcial:** 1 fase (3)
-- **Pendentes:** 10 fases (4–13)
-- **Arquivos TS/TSX:** ~6
-- **Arquivos JS/JSX restantes:** ~45
+- **Concluídas:** 5 fases (1, 2, 3, 4, 5)
+- **Parcial:** 0 fases
+- **Pendentes:** 8 fases (6–13)
+- **Arquivos TS/TSX:** 11 arquivos
+- **Arquivos JS/JSX restantes:** 52 arquivos (16 .js + 36 .jsx)
 
 ## Pré-requisitos
 - Node.js e npm instalados
@@ -53,6 +53,12 @@ Este documento descreve o plano automatizado para migração do MiniBlog de Java
 7. Validar funcionamento completo
 8. Aprovar e merge PR para develop
 9. Iniciar próxima fase
+
+**Próxima Fase Recomendada: FASE 6 - Migração de Hooks**
+- Status atual: 5 fases concluídas (configuração, tipos, utils, services, contexts)
+- Próximo passo: Migrar 9 hooks de `.js` → `.ts`
+- Impacto: 18 arquivos (9 hooks + 9 testes)
+- Hooks prioritários: useLogin, useRegister, useLogout, usePosts
 
 ---
 
@@ -408,16 +414,16 @@ git checkout -b feature/ts-phase-3-utils
 ### FASE 3: Migração de Utils e Config (1 hora)
 
 #### 3.1 Migrar Arquivos de Configuração
-1. Renomear `src/config/firebase.js` → `src/config/firebase.ts`
-2. Adicionar tipagem para variáveis de ambiente
-3. Remover PropTypes se existirem
+✅ **CONCLUÍDO:** Renomear `src/config/firebase.js` → `src/config/firebase.ts`
+✅ **CONCLUÍDO:** Adicionar tipagem para variáveis de ambiente
+✅ **CONCLUÍDO:** Remover PropTypes se existirem
 
 #### 3.2 Migrar Utils
-1. Renomear `src/utils/formatDate.js` → `src/utils/formatDate.ts`
-2. Adicionar tipos para parâmetros e retorno
-3. Renomear `src/utils/generateSlug.js` → `src/utils/generateSlug.ts`
+✅ **CONCLUÍDO:** Renomear `src/utils/formatDate.js` → `src/utils/formatDate.ts`
+✅ **CONCLUÍDO:** Adicionar tipos para parâmetros e retorno
+✅ **CONCLUÍDO:** Renomear `src/utils/generateSlug.js` → `src/utils/generateSlug.ts`
 
-**Checkpoint 3:** Utils migrados devem passar no type-check
+**Checkpoint 3:** ✅ Utils migrados devem passar no type-check
 
 #### 3.3 Commit e Pull Request FASE 3
 ```bash
@@ -489,10 +495,10 @@ git checkout -b feature/ts-phase-4-services
 ### FASE 4: Migração de Services (1-2 horas)
 
 #### 4.1 Migrar postService
-1. Renomear `src/services/postService.js` → `src/services/postService.ts`
-2. Adicionar tipos para todos os métodos
-3. Usar interfaces definidas em `src/types/index.ts`
-4. Remover comentários JSDoc redundantes
+✅ **CONCLUÍDO:** `src/services/postService.js` → `src/services/postService.ts`
+✅ **CONCLUÍDO:** Adicionar tipos para todos os métodos
+✅ **CONCLUÍDO:** Usar interfaces definidas em `src/types/index.ts`
+✅ **CONCLUÍDO:** Remover comentários JSDoc redundantes
 
 #### 4.2 Validar Service
 ```bash
@@ -500,7 +506,7 @@ npm run type-check
 npm test -- src/services/postService.test.ts
 ```
 
-**Checkpoint 4:** Service migrado e testes passando
+**Checkpoint 4:** ✅ Service migrado e testes passando
 
 #### 4.3 Commit e Pull Request FASE 4
 ```bash
@@ -555,10 +561,10 @@ git checkout -b feature/ts-phase-5-contexts
 ### FASE 5: Migração de Contexts (1 hora)
 
 #### 5.1 Migrar AuthContext
-1. Renomear `src/contexts/AuthContext.jsx` → `src/contexts/AuthContext.tsx`
-2. Substituir PropTypes por interfaces TypeScript
-3. Adicionar tipos para context value
-4. Tipar hooks customizados
+✅ **CONCLUÍDO:** Renomear `src/contexts/AuthContext.jsx` → `src/contexts/AuthContext.tsx`
+✅ **CONCLUÍDO:** Substituir PropTypes por interfaces TypeScript
+✅ **CONCLUÍDO:** Adicionar tipos para context value
+✅ **CONCLUÍDO:** Tipar hooks customizados
 
 #### 5.2 Validar Context
 ```bash
@@ -566,7 +572,7 @@ npm run type-check
 npm test -- src/contexts/AuthContext.test.tsx
 ```
 
-**Checkpoint 5:** Context migrado e testes passando
+**Checkpoint 5:** ✅ Context migrado e testes passando
 
 #### 5.3 Commit e Pull Request FASE 5
 ```bash
