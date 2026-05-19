@@ -13,19 +13,23 @@ import {
   onSnapshot,
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
+import type {
+  Post,
+  CreatePostDTO,
+  UpdatePostDTO,
+  PostService,
+} from '../types';
 
 const POSTS_COLLECTION = 'posts';
 
 /**
  * Serviço para gerenciar posts no Firestore
  */
-export const postService = {
+export const postService: PostService = {
   /**
    * Cria um novo post no Firestore
-   * @param {Object} postData - Dados do post
-   * @returns {Promise<Object>} - Post criado com ID
    */
-  async createPost(postData) {
+  async createPost(postData: CreatePostDTO & { authorId: string; slug: string }): Promise<Omit<Post, 'createdAt' | 'updatedAt'>> {
     if (!postData.title || !postData.content || !postData.slug || !postData.authorId) {
       throw new Error('Campos obrigatórios ausentes: title, content, slug, authorId');
     }
@@ -43,17 +47,22 @@ export const postService = {
         id: docRef.id,
         ...postData,
       };
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Erro ao criar post:', error);
-      console.error('Error code:', error.code);
-      console.error('Error message:', error.message);
+      
+      // Type guard para Firebase errors
+      if (error && typeof error === 'object' && 'code' in error && 'message' in error) {
+        const firebaseError = error as { code?: string; message?: string };
+        console.error('Error code:', firebaseError.code);
+        console.error('Error message:', firebaseError.message);
 
-      if (error.code === 'permission-denied') {
-        throw new Error('Você não tem permissão para criar posts. Verifique se está autenticado.');
-      }
+        if (firebaseError.code === 'permission-denied') {
+          throw new Error('Você não tem permissão para criar posts. Verifique se está autenticado.');
+        }
 
-      if (error.code === 'unavailable' || error.message?.includes('CORS') || error.message?.includes('fetch')) {
-        throw new Error('Erro de conexão com o Firebase. Verifique suas variáveis de ambiente (.env) e a configuração do Firebase. Erro: ' + (error.message || 'Unknown error'));
+        if (firebaseError.code === 'unavailable' || firebaseError.message?.includes('CORS') || firebaseError.message?.includes('fetch')) {
+          throw new Error('Erro de conexão com o Firebase. Verifique suas variáveis de ambiente (.env) e a configuração do Firebase. Erro: ' + (firebaseError.message || 'Unknown error'));
+        }
       }
 
       throw error;
@@ -62,11 +71,8 @@ export const postService = {
 
   /**
    * Verifica se um slug já existe no Firestore
-   * @param {string} slug - Slug a verificar
-   * @param {string} excludeId - ID do post a excluir da verificação (para edição)
-   * @returns {Promise<boolean>} - true se único, false se já existe
    */
-  async checkSlugUniqueness(slug, excludeId = null) {
+  async checkSlugUniqueness(slug: string, excludeId?: string | null): Promise<boolean> {
     const q = query(collection(db, POSTS_COLLECTION), where('slug', '==', slug));
     const querySnapshot = await getDocs(q);
 
@@ -79,25 +85,24 @@ export const postService = {
 
   /**
    * Busca todos os posts ordenados por data de criação
-   * @returns {Promise<Array>} - Lista de posts
    */
-  async getAllPosts() {
+  async getAllPosts(): Promise<Post[]> {
     const q = query(collection(db, POSTS_COLLECTION), orderBy('createdAt', 'desc'));
     const querySnapshot = await getDocs(q);
 
     return querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
-    }));
+    })) as Post[];
   },
 
   /**
    * Inscreve-se para atualizações em tempo real dos posts
-   * @param {Function} callback - Função chamada quando há atualizações
-   * @param {Function} errorCallback - Função chamada quando há erro (opcional)
-   * @returns {Function} - Função para cancelar inscrição
    */
-  subscribeToPostsRealtime(callback, errorCallback = null) {
+  subscribeToPostsRealtime(
+    callback: (posts: Post[]) => void,
+    errorCallback?: (error: Error) => void
+  ): () => void {
     try {
       const q = query(collection(db, POSTS_COLLECTION), orderBy('createdAt', 'desc'));
 
@@ -107,39 +112,45 @@ export const postService = {
           const posts = snapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
-          }));
+          })) as Post[];
           callback(posts);
         },
-        (error) => {
+        (error: unknown) => {
           console.error('Erro na subscription de posts:', error);
-          console.error('Error code:', error.code);
-          console.error('Error message:', error.message);
+          
+          // Type guard para Firebase errors
+          if (error && typeof error === 'object' && 'code' in error && 'message' in error) {
+            const firebaseError = error as { code?: string; message?: string };
+            console.error('Error code:', firebaseError.code);
+            console.error('Error message:', firebaseError.message);
 
-          // Handle various Firebase/CORS errors
-          if (error.code === 'permission-denied') {
-            const permissionError = new Error('Você não tem permissão para acessar os posts. Verifique se está autenticado.');
-            if (errorCallback) {
-              errorCallback(permissionError);
+            // Handle various Firebase/CORS errors
+            if (firebaseError.code === 'permission-denied') {
+              const permissionError = new Error('Você não tem permissão para acessar os posts. Verifique se está autenticado.');
+              if (errorCallback) {
+                errorCallback(permissionError);
+              }
+              return;
             }
-            return;
-          }
 
-          if (error.code === 'unavailable' || error.message?.includes('CORS') || error.message?.includes('fetch')) {
-            const corsError = new Error('Erro de conexão com o Firebase. Verifique suas variáveis de ambiente (.env) e a configuração do Firebase. Erro: ' + (error.message || 'Unknown error'));
-            if (errorCallback) {
-              errorCallback(corsError);
+            if (firebaseError.code === 'unavailable' || firebaseError.message?.includes('CORS') || firebaseError.message?.includes('fetch')) {
+              const corsError = new Error('Erro de conexão com o Firebase. Verifique suas variáveis de ambiente (.env) e a configuração do Firebase. Erro: ' + (firebaseError.message || 'Unknown error'));
+              if (errorCallback) {
+                errorCallback(corsError);
+              }
+              return;
             }
-            return;
           }
 
           if (errorCallback) {
-            errorCallback(error);
+            errorCallback(error as Error);
           }
         }
       );
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Erro ao configurar subscription de posts:', error);
-      const initError = new Error('Erro ao inicializar conexão com o Firebase: ' + error.message);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      const initError = new Error('Erro ao inicializar conexão com o Firebase: ' + errorMessage);
       if (errorCallback) {
         errorCallback(initError);
       }
@@ -149,10 +160,8 @@ export const postService = {
 
   /**
    * Busca um post pelo slug
-   * @param {string} slug - Slug do post
-   * @returns {Promise<Object|null>} - Post encontrado ou null
    */
-  async getPostBySlug(slug) {
+  async getPostBySlug(slug: string): Promise<Post | null> {
     const q = query(collection(db, POSTS_COLLECTION), where('slug', '==', slug));
     const querySnapshot = await getDocs(q);
 
@@ -164,15 +173,13 @@ export const postService = {
     return {
       id: docData.id,
       ...docData.data(),
-    };
+    } as Post;
   },
 
   /**
    * Busca um post pelo ID
-   * @param {string} id - ID do post
-   * @returns {Promise<Object|null>} - Post encontrado ou null
    */
-  async getPostById(id) {
+  async getPostById(id: string): Promise<Post | null> {
     const docRef = doc(db, POSTS_COLLECTION, id);
     const docSnap = await getDoc(docRef);
 
@@ -183,16 +190,13 @@ export const postService = {
     return {
       id: docSnap.id,
       ...docSnap.data(),
-    };
+    } as Post;
   },
 
   /**
    * Atualiza um post existente
-   * @param {string} id - ID do post
-   * @param {Object} postData - Dados atualizados
-   * @returns {Promise<void>}
    */
-  async updatePost(id, postData) {
+  async updatePost(id: string, postData: UpdatePostDTO): Promise<void> {
     const docRef = doc(db, POSTS_COLLECTION, id);
     await updateDoc(docRef, {
       ...postData,
@@ -202,20 +206,16 @@ export const postService = {
 
   /**
    * Exclui um post
-   * @param {string} id - ID do post
-   * @returns {Promise<void>}
    */
-  async deletePost(id) {
+  async deletePost(id: string): Promise<void> {
     const docRef = doc(db, POSTS_COLLECTION, id);
     await deleteDoc(docRef);
   },
 
   /**
    * Busca posts por tag
-   * @param {string} tag - Tag para filtrar
-   * @returns {Promise<Array>} - Lista de posts com a tag
    */
-  async getPostsByTag(tag) {
+  async getPostsByTag(tag: string): Promise<Post[]> {
     const q = query(
       collection(db, POSTS_COLLECTION),
       where('tags', 'array-contains', tag),
@@ -226,6 +226,6 @@ export const postService = {
     return querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
-    }));
+    })) as Post[];
   },
 };
