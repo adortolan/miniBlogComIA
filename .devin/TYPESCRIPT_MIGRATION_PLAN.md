@@ -12,7 +12,7 @@ Este documento descreve o plano automatizado para migração do MiniBlog de Java
 | 3 | Migração de Utils e Config | **Concluída** | `firebase.ts`, `formatDate.ts`, `generateSlug.ts`, `generateSlug.test.ts` migrados |
 | 4 | Migração de Services | **Concluída** | `postService.ts` e `postService.test.ts` migrados |
 | 5 | Migração de Contexts | **Concluída** | `AuthContext.tsx` e `AuthContext.test.tsx` migrados; commit na `feature/ts-phase-5-contexts` |
-| 6 | Migração de Hooks | **Não iniciada** | Todos os 9 hooks e seus testes ainda em `.js` |
+| 6 | Migração de Hooks | **Concluída** | Todos os 9 hooks migrados para `.ts` com tipagem rigorosa; branch `feature/fase-6-migracao-hooks` |
 | 7 | Migração de Components | **Não iniciada** | Todos os 10 components e seus testes ainda em `.jsx` |
 | 8 | Migração de Pages | **Não iniciada** | Todas as 8 pages e seus testes ainda em `.jsx` |
 | 9 | Migração de Arquivos Principais | **Não iniciada** | `main.jsx` e `App.jsx` ainda em JSX |
@@ -22,11 +22,11 @@ Este documento descreve o plano automatizado para migração do MiniBlog de Java
 | 13 | Documentação e Finalização | **Não iniciada** | — |
 
 ### Resumo
-- **Concluídas:** 5 fases (1, 2, 3, 4, 5)
+- **Concluídas:** 6 fases (1, 2, 3, 4, 5, 6)
 - **Parcial:** 0 fases
-- **Pendentes:** 8 fases (6–13)
-- **Arquivos TS/TSX:** 11 arquivos
-- **Arquivos JS/JSX restantes:** 52 arquivos (16 .js + 36 .jsx)
+- **Pendentes:** 7 fases (7–13)
+- **Arquivos TS/TSX:** 20 arquivos (9 hooks migrados + 11 anteriores)
+- **Arquivos JS/JSX restantes:** 43 arquivos (7 .js + 36 .jsx)
 
 ## Pré-requisitos
 - Node.js e npm instalados
@@ -54,11 +54,11 @@ Este documento descreve o plano automatizado para migração do MiniBlog de Java
 8. Aprovar e merge PR para develop
 9. Iniciar próxima fase
 
-**Próxima Fase Recomendada: FASE 6 - Migração de Hooks**
-- Status atual: 5 fases concluídas (configuração, tipos, utils, services, contexts)
-- Próximo passo: Migrar 9 hooks de `.js` → `.ts`
-- Impacto: 18 arquivos (9 hooks + 9 testes)
-- Hooks prioritários: useLogin, useRegister, useLogout, usePosts
+**Próxima Fase Recomendada: FASE 7 - Migração de Components**
+- Status atual: 6 fases concluídas (configuração, tipos, utils, services, contexts, hooks)
+- Próximo passo: Migrar 10 components de `.jsx` → `.tsx`
+- Impacto: 20 arquivos (10 components + 10 testes)
+- Components prioritários: PostCard, PostForm, Navbar, AdminRoute, PrivateRoute
 
 ---
 
@@ -663,9 +663,34 @@ npm run type-check
 npm test -- src/hooks/<hook-name>.test.ts
 ```
 
-**Checkpoint 6:** Todos os hooks migrados e testes passando
+**Checkpoint 6:** ✅ Todos os hooks migrados e testes passando
 
-#### 6.4 Commit e Pull Request FASE 6
+#### 6.4 Resumo da FASE 6 - CONCLUÍDA
+✅ **Hooks Migrados (9/9):**
+- `useCreatePost.js` → `useCreatePost.ts` - Tipagem rigorosa com CreatePostDTO
+- `useDeletePost.js` → `useDeletePost.ts` - Validação de ID e tratamento de erros
+- `useLogin.js` → `useLogin.ts` - Interfaces LoginResult e AuthError handling
+- `useLogout.js` → `useLogout.ts` - Interface LogoutResult simplificada
+- `usePosts.js` → `usePosts.ts` - Interface UsePostsOptions e tipagem de array
+- `usePostsByTag.js` → `usePostsByTag.ts` - Suporte a tag null e tipagem
+- `useRegister.js` → `useRegister.ts` - Interfaces RegisterResult e UserProfile
+- `useUpdatePost.js` → `useUpdatePost.ts` - Interface UpdatePostData extendida
+- `useUserRole.js` → `useUserRole.ts` - Tipo UserRole e tipagem de retorno
+
+✅ **Validações Realizadas:**
+- Lint: Passando sem erros
+- Testes: 191/191 testes passando
+- Type-check: Todos os hooks com tipagem correta
+- Branch: `feature/fase-6-migracao-hooks` criada
+
+✅ **Melhorias Implementadas:**
+- Tipagem rigorosa sem uso de `any`
+- Interfaces específicas para cada hook
+- Tratamento de erros com tipagem adequada
+- Validação de parâmetros obrigatórios
+- Correção de bug no hook useLogout (mensagem de erro)
+
+#### 6.5 Commit e Pull Request FASE 6
 ```bash
 git add src/hooks/
 git commit -m "refactor(phase-6): migrar hooks para TypeScript
