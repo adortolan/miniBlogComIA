@@ -3,7 +3,7 @@ import { renderHook, act, waitFor } from '@testing-library/react';
 import { useUpdatePost } from './useUpdatePost';
 import { postService } from '../services/postService';
 import { useAuth } from '../contexts/AuthContext';
-import { UpdatePostDTO } from '../types';
+import { UpdatePostDTO, FirebaseUser } from '../types';
 
 vi.mock('../services/postService');
 vi.mock('../contexts/AuthContext', () => ({
@@ -17,7 +17,7 @@ describe('useUpdatePost', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockUseAuth.mockReturnValue({
-      user: { uid: 'user123', displayName: 'Test User', email: 'test@example.com', photoURL: null, emailVerified: true } as any,
+      user: { uid: 'user123', displayName: 'Test User', email: 'test@example.com', photoURL: null, emailVerified: true } as FirebaseUser,
       loading: false,
       isAuthenticated: true,
     });
@@ -88,7 +88,7 @@ describe('useUpdatePost', () => {
           content: 'Conteúdo',
           tags: [],
         });
-      } catch (error) {
+      } catch {
         // Erro esperado
       }
     });
@@ -108,7 +108,7 @@ describe('useUpdatePost', () => {
           content: 'Conteúdo sem título',
           tags: [],
         });
-      } catch (error) {
+      } catch {
         // Erro esperado
       }
     });
@@ -128,7 +128,7 @@ describe('useUpdatePost', () => {
           content: 'Conteúdo',
           tags: [],
         });
-      } catch (error) {
+      } catch {
         // Erro esperado
       }
     });
