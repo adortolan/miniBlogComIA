@@ -47,17 +47,22 @@ export const postService: PostService = {
         id: docRef.id,
         ...postData,
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Erro ao criar post:', error);
-      console.error('Error code:', error.code);
-      console.error('Error message:', error.message);
+      
+      // Type guard para Firebase errors
+      if (error && typeof error === 'object' && 'code' in error && 'message' in error) {
+        const firebaseError = error as { code?: string; message?: string };
+        console.error('Error code:', firebaseError.code);
+        console.error('Error message:', firebaseError.message);
 
-      if (error.code === 'permission-denied') {
-        throw new Error('Você não tem permissão para criar posts. Verifique se está autenticado.');
-      }
+        if (firebaseError.code === 'permission-denied') {
+          throw new Error('Você não tem permissão para criar posts. Verifique se está autenticado.');
+        }
 
-      if (error.code === 'unavailable' || error.message?.includes('CORS') || error.message?.includes('fetch')) {
-        throw new Error('Erro de conexão com o Firebase. Verifique suas variáveis de ambiente (.env) e a configuração do Firebase. Erro: ' + (error.message || 'Unknown error'));
+        if (firebaseError.code === 'unavailable' || firebaseError.message?.includes('CORS') || firebaseError.message?.includes('fetch')) {
+          throw new Error('Erro de conexão com o Firebase. Verifique suas variáveis de ambiente (.env) e a configuração do Firebase. Erro: ' + (firebaseError.message || 'Unknown error'));
+        }
       }
 
       throw error;
@@ -110,36 +115,42 @@ export const postService: PostService = {
           })) as Post[];
           callback(posts);
         },
-        (error: any) => {
+        (error: unknown) => {
           console.error('Erro na subscription de posts:', error);
-          console.error('Error code:', error.code);
-          console.error('Error message:', error.message);
+          
+          // Type guard para Firebase errors
+          if (error && typeof error === 'object' && 'code' in error && 'message' in error) {
+            const firebaseError = error as { code?: string; message?: string };
+            console.error('Error code:', firebaseError.code);
+            console.error('Error message:', firebaseError.message);
 
-          // Handle various Firebase/CORS errors
-          if (error.code === 'permission-denied') {
-            const permissionError = new Error('Você não tem permissão para acessar os posts. Verifique se está autenticado.');
-            if (errorCallback) {
-              errorCallback(permissionError);
+            // Handle various Firebase/CORS errors
+            if (firebaseError.code === 'permission-denied') {
+              const permissionError = new Error('Você não tem permissão para acessar os posts. Verifique se está autenticado.');
+              if (errorCallback) {
+                errorCallback(permissionError);
+              }
+              return;
             }
-            return;
-          }
 
-          if (error.code === 'unavailable' || error.message?.includes('CORS') || error.message?.includes('fetch')) {
-            const corsError = new Error('Erro de conexão com o Firebase. Verifique suas variáveis de ambiente (.env) e a configuração do Firebase. Erro: ' + (error.message || 'Unknown error'));
-            if (errorCallback) {
-              errorCallback(corsError);
+            if (firebaseError.code === 'unavailable' || firebaseError.message?.includes('CORS') || firebaseError.message?.includes('fetch')) {
+              const corsError = new Error('Erro de conexão com o Firebase. Verifique suas variáveis de ambiente (.env) e a configuração do Firebase. Erro: ' + (firebaseError.message || 'Unknown error'));
+              if (errorCallback) {
+                errorCallback(corsError);
+              }
+              return;
             }
-            return;
           }
 
           if (errorCallback) {
-            errorCallback(error);
+            errorCallback(error as Error);
           }
         }
       );
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Erro ao configurar subscription de posts:', error);
-      const initError = new Error('Erro ao inicializar conexão com o Firebase: ' + error.message);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      const initError = new Error('Erro ao inicializar conexão com o Firebase: ' + errorMessage);
       if (errorCallback) {
         errorCallback(initError);
       }
