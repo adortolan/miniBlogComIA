@@ -3,6 +3,31 @@
 ## Visão Geral
 Este documento descreve o plano automatizado para migração do MiniBlog de JavaScript para TypeScript, projetado para ser executado por agentes de IA de forma autônoma.
 
+## Status Atual da Migração
+
+| Fase | Descrição | Status | Detalhes |
+|------|-----------|--------|----------|
+| 1 | Preparação e Configuração | **Concluída** | `tsconfig.json`, `tsconfig.node.json`, `vite.config.ts` criados/atualizados |
+| 2 | Definição de Tipos Base | **Concluída** | `src/types/index.ts` e `src/types/firebase.ts` criados |
+| 3 | Migração de Utils e Config | **Concluída** | `firebase.ts`, `formatDate.ts`, `generateSlug.ts`, `generateSlug.test.ts` migrados; commit na `feature/ts-phase-3-utils` |
+| 4 | Migração de Services | **Não iniciada** | `postService.js` e `postService.test.js` ainda em JS |
+| 5 | Migração de Contexts | **Não iniciada** | `AuthContext.jsx` e `AuthContext.test.jsx` ainda em JSX |
+| 6 | Migração de Hooks | **Não iniciada** | Todos os 9 hooks e seus testes ainda em `.js` |
+| 7 | Migração de Components | **Não iniciada** | Todos os 10 components e seus testes ainda em `.jsx` |
+| 8 | Migração de Pages | **Não iniciada** | Todas as 8 pages e seus testes ainda em `.jsx` |
+| 9 | Migração de Arquivos Principais | **Não iniciada** | `main.jsx` e `App.jsx` ainda em JSX |
+| 10 | Migração de Testes | **Não iniciada** | Vários testes unitários ainda em `.js`/`.jsx` |
+| 11 | Validação Final | **Não iniciada** | — |
+| 12 | Limpeza e Refinamento | **Não iniciada** | — |
+| 13 | Documentação e Finalização | **Não iniciada** | — |
+
+### Resumo
+- **Concluídas:** 2 fases (1, 2)
+- **Parcial:** 1 fase (3)
+- **Pendentes:** 10 fases (4–13)
+- **Arquivos TS/TSX:** ~6
+- **Arquivos JS/JSX restantes:** ~45
+
 ## Pré-requisitos
 - Node.js e npm instalados
 - Git configurado
