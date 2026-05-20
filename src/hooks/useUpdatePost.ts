@@ -61,8 +61,12 @@ export const useUpdatePost = () => {
         title: postData.title,
         content: postData.content,
         tags: postData.tags || [],
-        imageURL: postData.imageURL,
       };
+
+      // Só inclui imageURL se tiver um valor válido
+      if (postData.imageURL) {
+        updateData.imageURL = postData.imageURL;
+      }
 
       await postService.updatePost(postId, updateData);
 
