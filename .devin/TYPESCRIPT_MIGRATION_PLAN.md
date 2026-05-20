@@ -13,10 +13,10 @@ Este documento descreve o plano automatizado para migração do MiniBlog de Java
 | 4 | Migração de Services | **Concluída** | `postService.ts` e `postService.test.ts` migrados |
 | 5 | Migração de Contexts | **Concluída** | `AuthContext.tsx` e `AuthContext.test.tsx` migrados; commit na `feature/ts-phase-5-contexts` |
 | 6 | Migração de Hooks | **Concluída** | Todos os 9 hooks migrados para `.ts` com tipagem rigorosa; branch `feature/fase-6-migracao-hooks` |
-| 7 | Migração de Components | **Não iniciada** | Todos os 10 components e seus testes ainda em `.jsx` |
-| 8 | Migração de Pages | **Não iniciada** | Todas as 8 pages e seus testes ainda em `.jsx` |
+| 7 | Migração de Components | **Não iniciada** | Todos os 10 components e seus 9 testes ainda em `.jsx` |
+| 8 | Migração de Pages | **Não iniciada** | Todas as 8 pages e seus 7 testes ainda em `.jsx` |
 | 9 | Migração de Arquivos Principais | **Não iniciada** | `main.jsx` e `App.jsx` ainda em JSX |
-| 10 | Migração de Testes | **Não iniciada** | Vários testes unitários ainda em `.js`/`.jsx` |
+| 10 | Migração de Testes Setup | **Não iniciada** | `src/test/setup.js` ainda em `.js` |
 | 11 | Validação Final | **Não iniciada** | — |
 | 12 | Limpeza e Refinamento | **Não iniciada** | — |
 | 13 | Documentação e Finalização | **Não iniciada** | — |
@@ -25,8 +25,8 @@ Este documento descreve o plano automatizado para migração do MiniBlog de Java
 - **Concluídas:** 6 fases (1, 2, 3, 4, 5, 6)
 - **Parcial:** 0 fases
 - **Pendentes:** 7 fases (7–13)
-- **Arquivos TS/TSX:** 20 arquivos (9 hooks migrados + 11 anteriores)
-- **Arquivos JS/JSX restantes:** 43 arquivos (7 .js + 36 .jsx)
+- **Arquivos TS/TSX:** 26 arquivos (config: 1, contexts: 2, hooks: 17, services: 2, types: 2, utils: 3, vite-env: 1)
+- **Arquivos JS/JSX restantes:** 35 arquivos (components: 19, pages: 15, main: 2, setup: 1)
 
 ## Pré-requisitos
 - Node.js e npm instalados
