@@ -269,7 +269,7 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ## 📞 Contato
 
-Criado por **[Seu Nome]** - [@seu-usuario](https://github.com/seu-usuario)
+Criado por **Adilson Ortolan** - [@adortolan](https://github.com/adortolan)
 
 ---
 
