@@ -17,7 +17,7 @@ describe('useUpdatePost', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockUseAuth.mockReturnValue({
-      user: { uid: 'user123', displayName: 'Test User', email: 'test@example.com', photoURL: null, emailVerified: true } as any,
+      user: { uid: 'user123', displayName: 'Test User', email: 'test@example.com', photoURL: null, emailVerified: true } as any, // eslint-disable-line @typescript-eslint/no-explicit-any
       loading: false,
       isAuthenticated: true,
     });
@@ -88,7 +88,7 @@ describe('useUpdatePost', () => {
           content: 'Conteúdo',
           tags: [],
         });
-      } catch (error) {
+      } catch {
         // Erro esperado
       }
     });
@@ -108,7 +108,7 @@ describe('useUpdatePost', () => {
           content: 'Conteúdo sem título',
           tags: [],
         });
-      } catch (error) {
+      } catch {
         // Erro esperado
       }
     });
@@ -128,7 +128,7 @@ describe('useUpdatePost', () => {
           content: 'Conteúdo',
           tags: [],
         });
-      } catch (error) {
+      } catch {
         // Erro esperado
       }
     });

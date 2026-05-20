@@ -18,7 +18,7 @@ export const useLogout = () => {
     try {
       await signOut(auth);
       return { success: true };
-    } catch (err) {
+    } catch {
       const errorMessage = 'Erro ao fazer logout';
       setError(errorMessage);
       return { success: false, error: errorMessage };

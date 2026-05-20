@@ -17,7 +17,7 @@ describe('useCreatePost', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockUseAuth.mockReturnValue({
-      user: { uid: 'user123', displayName: 'Test User', email: 'test@example.com', photoURL: null, emailVerified: true },
+      user: { uid: 'user123', displayName: 'Test User', email: 'test@example.com', photoURL: null, emailVerified: true } as any, // eslint-disable-line @typescript-eslint/no-explicit-any
       loading: false,
       isAuthenticated: true,
     });
@@ -88,7 +88,7 @@ describe('useCreatePost', () => {
           content: 'Conteúdo',
           tags: [],
         });
-      } catch (error) {
+      } catch {
         // Erro esperado
       }
     });
@@ -105,10 +105,11 @@ describe('useCreatePost', () => {
     await act(async () => {
       try {
         await result.current.createPost({
+          title: '',
           content: 'Conteúdo sem título',
           tags: [],
         });
-      } catch (error) {
+      } catch {
         // Erro esperado
       }
     });
