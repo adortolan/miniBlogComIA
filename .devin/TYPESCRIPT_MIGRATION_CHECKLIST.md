@@ -11,70 +11,70 @@ Use este checklist para acompanhar o progresso da migração.
 - [ ] Backup commit realizado
 
 ### FASE 1: Preparação e Configuração
-- [ ] Dependências TypeScript instaladas
-- [ ] `tsconfig.json` criado
-- [ ] `tsconfig.node.json` criado
-- [ ] `vite.config.js` → `vite.config.ts`
-- [ ] `.eslintrc.cjs` atualizado
-- [ ] `package.json` scripts atualizados
-- [ ] Type-check executando (com erros esperados)
-- [ ] Commit realizado
+- [x] Dependências TypeScript instaladas
+- [x] `tsconfig.json` criado
+- [x] `tsconfig.node.json` criado
+- [x] `vite.config.js` → `vite.config.ts`
+- [x] `.eslintrc.cjs` atualizado
+- [x] `package.json` scripts atualizados
+- [x] Type-check executando (com erros esperados)
+- [x] Commit realizado
 
 ### FASE 2: Tipos Base
-- [ ] `src/types/index.ts` criado com todas as interfaces
-- [ ] `src/types/firebase.ts` criado
-- [ ] Types reconhecidos pelo TypeScript
-- [ ] Commit realizado
+- [x] `src/types/index.ts` criado com todas as interfaces
+- [x] `src/types/firebase.ts` criado
+- [x] Types reconhecidos pelo TypeScript
+- [x] Commit realizado
 
 ### FASE 3: Utils e Config
-- [ ] `src/config/firebase.js` → `firebase.ts`
-- [ ] `src/utils/formatDate.js` → `formatDate.ts`
-- [ ] `src/utils/generateSlug.js` → `generateSlug.ts`
-- [ ] Type-check passando para utils/config
-- [ ] Testes de utils/config passando
-- [ ] Commit realizado
+- [x] `src/config/firebase.js` → `firebase.ts`
+- [x] `src/utils/formatDate.js` → `formatDate.ts`
+- [x] `src/utils/generateSlug.js` → `generateSlug.ts`
+- [x] Type-check passando para utils/config
+- [x] Testes de utils/config passando
+- [x] Commit realizado
 
 ### FASE 4: Services
-- [ ] `src/services/postService.js` → `postService.ts`
-- [ ] Type-check passando para services
-- [ ] Testes de services passando
-- [ ] Commit realizado
+- [x] `src/services/postService.js` → `postService.ts`
+- [x] Type-check passando para services
+- [x] Testes de services passando
+- [x] Commit realizado
 
 ### FASE 5: Contexts
-- [ ] `src/contexts/AuthContext.jsx` → `AuthContext.tsx`
-- [ ] PropTypes removidos
-- [ ] Type-check passando para contexts
-- [ ] Testes de contexts passando
-- [ ] Commit realizado
+- [x] `src/contexts/AuthContext.jsx` → `AuthContext.tsx`
+- [x] PropTypes removidos
+- [x] Type-check passando para contexts
+- [x] Testes de contexts passando
+- [x] Commit realizado
 
 ### FASE 6: Hooks
-- [ ] `useLogin.js` → `useLogin.ts`
-- [ ] `useRegister.js` → `useRegister.ts`
-- [ ] `useLogout.js` → `useLogout.ts`
-- [ ] `useUserRole.js` → `useUserRole.ts`
-- [ ] `usePosts.js` → `usePosts.ts`
-- [ ] `usePostsByTag.js` → `usePostsByTag.ts`
-- [ ] `useCreatePost.js` → `useCreatePost.ts`
-- [ ] `useUpdatePost.js` → `useUpdatePost.ts`
-- [ ] `useDeletePost.js` → `useDeletePost.ts`
-- [ ] Type-check passando para hooks
-- [ ] Todos os testes de hooks passando
-- [ ] Commit realizado
+- [x] `useLogin.js` → `useLogin.ts`
+- [x] `useRegister.js` → `useRegister.ts`
+- [x] `useLogout.js` → `useLogout.ts`
+- [x] `useUserRole.js` → `useUserRole.ts`
+- [x] `usePosts.js` → `usePosts.ts`
+- [x] `usePostsByTag.js` → `usePostsByTag.ts`
+- [x] `useCreatePost.js` → `useCreatePost.ts`
+- [x] `useUpdatePost.js` → `useUpdatePost.ts`
+- [x] `useDeletePost.js` → `useDeletePost.ts`
+- [x] Type-check passando para hooks
+- [x] Todos os testes de hooks passando
+- [x] Commit realizado
 
 ### FASE 7: Components
-- [ ] `TagFilter.jsx` → `TagFilter.tsx`
-- [ ] `DeleteConfirmModal.jsx` → `DeleteConfirmModal.tsx`
-- [ ] `AuthStatus.jsx` → `AuthStatus.tsx`
-- [ ] `PrivateRoute.jsx` → `PrivateRoute.tsx`
-- [ ] `AdminRoute.jsx` → `AdminRoute.tsx`
-- [ ] `PostCard.jsx` → `PostCard.tsx`
-- [ ] `PostForm.jsx` → `PostForm.tsx`
-- [ ] `Navbar.jsx` → `Navbar.tsx`
-- [ ] `HeroSection.jsx` → `HeroSection.tsx`
-- [ ] `FirebaseTest.jsx` → `FirebaseTest.tsx` (se aplicável)
-- [ ] Type-check passando para components
-- [ ] Todos os testes de components passando
-- [ ] Commit realizado
+- [x] `TagFilter.jsx` → `TagFilter.tsx`
+- [x] `DeleteConfirmModal.jsx` → `DeleteConfirmModal.tsx`
+- [x] `AuthStatus.jsx` → `AuthStatus.tsx`
+- [x] `PrivateRoute.jsx` → `PrivateRoute.tsx`
+- [x] `AdminRoute.jsx` → `AdminRoute.tsx`
+- [x] `PostCard.jsx` → `PostCard.tsx`
+- [x] `PostForm.jsx` → `PostForm.tsx`
+- [x] `Navbar.jsx` → `Navbar.tsx`
+- [x] `HeroSection.jsx` → `HeroSection.tsx`
+- [x] `FirebaseTest.jsx` → `FirebaseTest.tsx` (se aplicável)
+- [x] Type-check passando para components
+- [x] Todos os testes de components passando
+- [x] Commit realizado
 
 ### FASE 8: Pages
 - [ ] `Login.jsx` → `Login.tsx`
