@@ -19,6 +19,14 @@ vi.mock('firebase/auth', () => ({
   signInWithPopup: vi.fn(),
 }));
 
+vi.mock('../config/firebase', () => ({
+  db: {},
+  auth: {
+    currentUser: null,
+    onAuthStateChanged: vi.fn(),
+  },
+}));
+
 vi.mock('firebase/firestore', () => ({
   getFirestore: vi.fn(() => ({})),
   collection: vi.fn(),
