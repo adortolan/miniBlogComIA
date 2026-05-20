@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { formatRelativeDate } from '../utils/formatDate';
 import type { Post } from '../types';
+import type { MouseEvent } from 'react';
 
 interface PostCardProps {
   post: Post;
@@ -15,7 +16,7 @@ export const PostCard = ({ post }: PostCardProps) => {
   const navigate = useNavigate();
   const { slug, title, content, tags, imageURL, createdAt } = post;
 
-  const handleTagClick = (e: React.MouseEvent<HTMLSpanElement>, tag: string) => {
+  const handleTagClick = (e: MouseEvent<HTMLSpanElement>, tag: string) => {
     e.preventDefault();
     e.stopPropagation();
     navigate(`/?tag=${tag}`);

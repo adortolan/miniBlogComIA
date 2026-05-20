@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+import type { ReactElement } from 'react';
 import Navbar from './Navbar';
 
 const mockUseAuthContext = vi.fn();
@@ -26,7 +27,7 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
-const renderWithRouter = (component: React.ReactElement) => {
+const renderWithRouter = (component: ReactElement) => {
   return render(<BrowserRouter>{component}</BrowserRouter>);
 };
 

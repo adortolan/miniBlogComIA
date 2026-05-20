@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+import type { ReactElement } from 'react';
 import AuthStatus from './AuthStatus';
 
 const mockUseAuthContext = vi.fn();
@@ -9,7 +10,7 @@ vi.mock('../contexts/AuthContext', () => ({
   useAuthContext: () => mockUseAuthContext(),
 }));
 
-const renderWithRouter = (component: React.ReactElement) => {
+const renderWithRouter = (component: ReactElement) => {
   return render(<BrowserRouter>{component}</BrowserRouter>);
 };
 

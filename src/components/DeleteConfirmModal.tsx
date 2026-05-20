@@ -1,3 +1,5 @@
+import type { MouseEvent } from 'react';
+
 interface DeleteConfirmModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -22,7 +24,7 @@ export const DeleteConfirmModal = ({
     return null;
   }
 
-  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleOverlayClick = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose();
     }
