@@ -68,10 +68,15 @@ export const useUpdatePost = () => {
         updateData.imageURL = postData.imageURL;
       }
 
+      // Inclui o slug se foi gerado um novo
+      if (slug !== postData.oldSlug) {
+        updateData.slug = slug;
+      }
+
       await postService.updatePost(postId, updateData);
 
       setLoading(false);
-      return { ...updateData, id: postId };
+      return { ...updateData, id: postId, slug: slug };
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido ao atualizar post';
       setError(errorMessage);

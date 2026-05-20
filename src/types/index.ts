@@ -30,6 +30,7 @@ export interface UpdatePostDTO {
   content?: string;
   tags?: string[];
   imageURL?: string;
+  slug?: string;
 }
 
 // Context Types
