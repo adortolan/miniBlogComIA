@@ -59,7 +59,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
@@ -97,7 +97,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Run npm audit
@@ -107,7 +107,7 @@ jobs:
 
       - name: Check for hardcoded secrets
         run: |
-          secrets_found=$(grep -rn "FIREBASE\|API_KEY\|SECRET" src/ --include="*.js" --include="*.jsx" | grep -v "process.env" || true)
+          secrets_found=$(grep -rn "FIREBASE\|API_KEY\|SECRET" src/ --include="*.js" --include="*.jsx" --include="*.ts" --include="*.tsx" | grep -v "process.env" | grep -v "import.meta.env" || true)
           if [ ! -z "$secrets_found" ]; then
             echo "❌ Potential hardcoded secrets found:"
             echo "$secrets_found"
@@ -124,7 +124,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
