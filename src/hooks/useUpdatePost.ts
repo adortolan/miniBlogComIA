@@ -62,7 +62,6 @@ export const useUpdatePost = () => {
         content: postData.content,
         tags: postData.tags || [],
         imageURL: postData.imageURL,
-        slug,
       };
 
       await postService.updatePost(postId, updateData);

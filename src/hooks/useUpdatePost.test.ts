@@ -49,8 +49,10 @@ describe('useUpdatePost', () => {
     expect(mockPostService.updatePost).toHaveBeenCalledWith(
       postId,
       expect.objectContaining({
-        ...postData,
-        slug: expect.any(String),
+        title: postData.title,
+        content: postData.content,
+        tags: postData.tags,
+        imageURL: postData.imageURL,
       })
     );
   });
@@ -153,12 +155,13 @@ describe('useUpdatePost', () => {
       });
     });
 
-    expect(mockPostService.checkSlugUniqueness).toHaveBeenCalled();
     expect(mockPostService.updatePost).toHaveBeenCalledWith(
       'post123',
       expect.objectContaining({
         title: 'Novo Título',
-        slug: 'novo-titulo'
+        content: 'Conteúdo',
+        tags: [],
+        imageURL: undefined,
       })
     );
   });
@@ -177,12 +180,13 @@ describe('useUpdatePost', () => {
       });
     });
 
-    expect(mockPostService.checkSlugUniqueness).not.toHaveBeenCalled();
     expect(mockPostService.updatePost).toHaveBeenCalledWith(
       'post123',
       expect.objectContaining({
         title: 'Título',
-        slug: 'titulo'
+        content: 'Conteúdo atualizado',
+        tags: [],
+        imageURL: undefined,
       })
     );
   });

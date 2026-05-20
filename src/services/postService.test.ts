@@ -32,10 +32,14 @@ vi.mock('firebase/firestore', () => ({
   orderBy: vi.fn(),
   updateDoc: vi.fn(),
   deleteDoc: vi.fn(),
-  serverTimestamp: vi.fn((): FirebaseTimestamp => ({ 
+  serverTimestamp: vi.fn(() => ({
+    toDate: vi.fn(() => new Date()),
     seconds: Math.floor(Date.now() / 1000),
-    nanoseconds: 0 
-  })),
+    nanoseconds: 0,
+    isEqual: vi.fn(() => false),
+    toJSON: vi.fn(() => ({ seconds: Math.floor(Date.now() / 1000), nanoseconds: 0 })),
+    toMillis: vi.fn(() => Date.now())
+  } as unknown as FirebaseTimestamp)),
   onSnapshot: vi.fn(),
 }));
 
@@ -379,9 +383,9 @@ describe('postService', () => {
 
     it('deve chamar callback com posts quando há atualizações', () => {
       const mockUnsubscribe = vi.fn();
-      mockOnSnapshot.mockImplementation((query, onNext) => {
+      mockOnSnapshot.mockImplementation((_query, _onNext) => {
         // Simular recebimento de dados
-        onNext({
+        _onNext({
           docs: [
             {
               id: '1',
@@ -410,10 +414,10 @@ describe('postService', () => {
 
     it('deve chamar errorCallback quando há erro de permissão', () => {
       const mockUnsubscribe = vi.fn();
-      mockOnSnapshot.mockImplementation((query, onNext, onError) => {
+      mockOnSnapshot.mockImplementation((_query, _onNext, _onError) => {
         const error = new Error('permission-denied') as Error & { code: string };
         error.code = 'permission-denied';
-        onError(error);
+        _onError(error);
         return mockUnsubscribe;
       });
 
