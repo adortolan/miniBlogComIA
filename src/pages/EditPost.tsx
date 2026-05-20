@@ -5,7 +5,7 @@ import { useUpdatePost } from '../hooks/useUpdatePost';
 import { useUserRole } from '../hooks/useUserRole';
 import { postService } from '../services/postService';
 import { PostForm } from '../components/PostForm';
-import type { Post, CreatePostDTO } from '../types';
+import type { Post, CreatePostDTO, UpdatePostDTO } from '../types';
 
 /**
  * Página para editar um post existente
@@ -16,7 +16,7 @@ export const EditPost = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { updatePost, loading: updating, error: updateError } = useUpdatePost();
-  const { isAdmin, loading: loadingRole } = useUserRole(user?.uid);
+  const { isAdmin, loading: loadingRole } = useUserRole(user?.uid ?? null);
   
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
@@ -62,10 +62,10 @@ export const EditPost = () => {
     }
   }, [post, loadingRole, isAdmin, user, navigate]);
 
-  const handleSubmit = async (postData: CreatePostDTO) => {
+  const handleSubmit = async (postData: CreatePostDTO | UpdatePostDTO) => {
     try {
       const updatedPost = await updatePost(id!, {
-        ...postData,
+        ...(postData as CreatePostDTO),
         oldSlug: post!.slug,
       });
       navigate(`/posts/${updatedPost.slug}`);

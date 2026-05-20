@@ -18,7 +18,7 @@ export const PostDetail = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { deletePost, loading: deleting } = useDeletePost();
-  const { isAdmin } = useUserRole(user?.uid);
+  const { isAdmin } = useUserRole(user?.uid ?? null);
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

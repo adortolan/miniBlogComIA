@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useCreatePost } from '../hooks/useCreatePost';
 import { PostForm } from '../components/PostForm';
-import type { CreatePostDTO } from '../types';
+import type { CreatePostDTO, UpdatePostDTO } from '../types';
 
 /**
  * Página para criar um novo post
@@ -20,9 +20,9 @@ export const CreatePost = () => {
     }
   }, [user, navigate]);
 
-  const handleSubmit = async (postData: CreatePostDTO) => {
+  const handleSubmit = async (postData: CreatePostDTO | UpdatePostDTO) => {
     try {
-      const createdPost = await createPost(postData);
+      const createdPost = await createPost(postData as CreatePostDTO);
       navigate(`/posts/${createdPost.slug}`);
     } catch (err) {
       console.error('Erro ao criar post:', err);
