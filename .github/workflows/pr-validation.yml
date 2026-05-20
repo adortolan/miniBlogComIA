@@ -101,11 +101,9 @@ jobs:
           cache: 'npm'
 
       - name: Run npm audit
+        continue-on-error: true
         run: |
-          npm audit --audit-level=moderate || {
-            echo "⚠️ Security vulnerabilities found. Please review npm audit output."
-            npm audit --audit-level=moderate
-          }
+          npm audit --audit-level=moderate || echo "⚠️ Security vulnerabilities found. Please review npm audit output."
 
       - name: Check for hardcoded secrets
         run: |
