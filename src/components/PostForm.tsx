@@ -110,12 +110,18 @@ export const PostForm = ({ onSubmit, loading = false, initialData }: PostFormPro
       .map((tag) => tag.trim().toLowerCase())
       .filter((tag) => tag.length > 0);
 
-    onSubmit({
+    const submitData: CreatePostDTO | UpdatePostDTO = {
       title: formData.title.trim(),
       content: formData.content.trim(),
       tags,
-      imageURL: formData.imageURL.trim() || undefined,
-    });
+    };
+
+    // Só inclui imageURL se tiver um valor válido
+    if (formData.imageURL.trim()) {
+      submitData.imageURL = formData.imageURL.trim();
+    }
+
+    onSubmit(submitData);
   };
 
   return (

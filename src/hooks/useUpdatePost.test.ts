@@ -161,7 +161,6 @@ describe('useUpdatePost', () => {
         title: 'Novo Título',
         content: 'Conteúdo',
         tags: [],
-        imageURL: undefined,
       })
     );
   });
@@ -186,7 +185,6 @@ describe('useUpdatePost', () => {
         title: 'Título',
         content: 'Conteúdo atualizado',
         tags: [],
-        imageURL: undefined,
       })
     );
   });

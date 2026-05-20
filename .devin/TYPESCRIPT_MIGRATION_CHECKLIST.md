@@ -18,13 +18,13 @@ Use este checklist para acompanhar o progresso da migração.
 - [x] `.eslintrc.cjs` atualizado
 - [x] `package.json` scripts atualizados
 - [x] Type-check executando (com erros esperados)
-- [x] Commit realizado
+- [ ] Commit realizado
 
 ### FASE 2: Tipos Base
 - [x] `src/types/index.ts` criado com todas as interfaces
 - [x] `src/types/firebase.ts` criado
 - [x] Types reconhecidos pelo TypeScript
-- [x] Commit realizado
+- [ ] Commit realizado
 
 ### FASE 3: Utils e Config
 - [x] `src/config/firebase.js` → `firebase.ts`
@@ -32,20 +32,20 @@ Use este checklist para acompanhar o progresso da migração.
 - [x] `src/utils/generateSlug.js` → `generateSlug.ts`
 - [x] Type-check passando para utils/config
 - [x] Testes de utils/config passando
-- [x] Commit realizado
+- [ ] Commit realizado
 
 ### FASE 4: Services
 - [x] `src/services/postService.js` → `postService.ts`
 - [x] Type-check passando para services
 - [x] Testes de services passando
-- [x] Commit realizado
+- [ ] Commit realizado
 
 ### FASE 5: Contexts
 - [x] `src/contexts/AuthContext.jsx` → `AuthContext.tsx`
 - [x] PropTypes removidos
 - [x] Type-check passando para contexts
 - [x] Testes de contexts passando
-- [x] Commit realizado
+- [ ] Commit realizado
 
 ### FASE 6: Hooks
 - [x] `useLogin.js` → `useLogin.ts`
@@ -59,7 +59,7 @@ Use este checklist para acompanhar o progresso da migração.
 - [x] `useDeletePost.js` → `useDeletePost.ts`
 - [x] Type-check passando para hooks
 - [x] Todos os testes de hooks passando
-- [x] Commit realizado
+- [ ] Commit realizado
 
 ### FASE 7: Components
 - [x] `TagFilter.jsx` → `TagFilter.tsx`
@@ -74,19 +74,19 @@ Use este checklist para acompanhar o progresso da migração.
 - [x] `FirebaseTest.jsx` → `FirebaseTest.tsx` (se aplicável)
 - [x] Type-check passando para components
 - [x] Todos os testes de components passando
-- [x] Commit realizado
+- [ ] Commit realizado
 
 ### FASE 8: Pages
-- [ ] `Login.jsx` → `Login.tsx`
-- [ ] `Register.jsx` → `Register.tsx`
-- [ ] `Dashboard.jsx` → `Dashboard.tsx`
-- [ ] `AdminPanel.jsx` → `AdminPanel.tsx`
-- [ ] `CreatePost.jsx` → `CreatePost.tsx`
-- [ ] `EditPost.jsx` → `EditPost.tsx`
-- [ ] `PostDetail.jsx` → `PostDetail.tsx`
-- [ ] `Home.jsx` → `Home.tsx`
-- [ ] Type-check passando para pages
-- [ ] Todos os testes de pages passando
+- [x] `Login.jsx` → `Login.tsx`
+- [x] `Register.jsx` → `Register.tsx`
+- [x] `Dashboard.jsx` → `Dashboard.tsx`
+- [x] `AdminPanel.jsx` → `AdminPanel.tsx`
+- [x] `CreatePost.jsx` → `CreatePost.tsx`
+- [x] `EditPost.jsx` → `EditPost.tsx`
+- [x] `PostDetail.jsx` → `PostDetail.tsx`
+- [x] `Home.jsx` → `Home.tsx`
+- [x] Type-check passando para pages
+- [x] Todos os testes de pages passando
 - [ ] Commit realizado
 
 ### FASE 9: Arquivos Principais
@@ -187,3 +187,10 @@ Espaço para anotações durante o processo de migração.
 | FASE 11 | 1 hora | | |
 | FASE 12 | 30 min | | |
 | **TOTAL** | **12-16 horas** | | |
+
+## Status Atual
+- **FASE 8 (Pages)**: Concluída em 2026-05-20
+  - 8 pages migradas para TypeScript
+  - 7 testes migrados para TypeScript
+  - Lint e testes passando
+  - Commit realizado na branch feature/ts-phase-8-pages
