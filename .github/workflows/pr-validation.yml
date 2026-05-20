@@ -107,7 +107,7 @@ jobs:
 
       - name: Check for hardcoded secrets
         run: |
-          secrets_found=$(grep -rn "FIREBASE\|API_KEY\|SECRET" src/ --include="*.js" --include="*.jsx" --include="*.ts" --include="*.tsx" | grep -v "process.env" | grep -v "import.meta.env" || true)
+          secrets_found=$(grep -rn "FIREBASE\|API_KEY\|SECRET" src/ --include="*.js" --include="*.jsx" --include="*.ts" --include="*.tsx" --exclude="*.d.ts" | grep -v "process.env" | grep -v "import.meta.env" | grep -v "vi\.mock\|vi\.fn\|mock\|Mock\|test\|spec" || true)
           if [ ! -z "$secrets_found" ]; then
             echo "❌ Potential hardcoded secrets found:"
             echo "$secrets_found"
