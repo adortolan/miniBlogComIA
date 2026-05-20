@@ -9,8 +9,8 @@ const mockGetDoc = vi.fn();
 const mockSetDoc = vi.fn();
 
 vi.mock('firebase/auth', () => ({
-  signInWithEmailAndPassword: (...args: any[]) => mockSignInWithEmailAndPassword(...args),
-  signInWithPopup: (...args: any[]) => mockSignInWithPopup(...args),
+  signInWithEmailAndPassword: (...args: unknown[]) => mockSignInWithEmailAndPassword(...args),
+  signInWithPopup: (...args: unknown[]) => mockSignInWithPopup(...args),
   GoogleAuthProvider: class {
     constructor() {
       mockGoogleAuthProvider();
@@ -20,8 +20,8 @@ vi.mock('firebase/auth', () => ({
 
 vi.mock('firebase/firestore', () => ({
   doc: () => 'mock-doc-ref',
-  getDoc: (...args: any[]) => mockGetDoc(...args),
-  setDoc: (...args: any[]) => mockSetDoc(...args),
+  getDoc: (...args: unknown[]) => mockGetDoc(...args),
+  setDoc: (...args: unknown[]) => mockSetDoc(...args),
 }));
 
 vi.mock('../config/firebase', () => ({
