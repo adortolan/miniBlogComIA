@@ -32,7 +32,31 @@ if (emptyFields.length > 0) {
   );
 }
 
-const app = initializeApp(firebaseConfig);
+// Initialize Firebase with enhanced error handling
+let app: ReturnType<typeof initializeApp>;
+try {
+  app = initializeApp(firebaseConfig);
+} catch (error) {
+  if (error instanceof Error) {
+    // Enhanced CORS error handling
+    if (error.message.includes('CORS') || error.message.includes('fetch') || error.message.includes('network')) {
+      throw new Error(
+        'Firebase Connection Error (CORS/Network): ' +
+        '\n\nPossible solutions:' +
+        '\n1. Authorize domain in Firebase Console:' +
+        '\n   - Go to: https://console.firebase.google.com/' +
+        '\n   - Navigate to: Authentication > Settings > Authorized Domains' +
+        '\n   - Add: localhost and your production domain' +
+        '\n\n2. Check your network connection and proxy settings' +
+        '\n\n3. Verify Firebase configuration in .env file' +
+        '\n\n4. Try restarting your dev server: npm run dev' +
+        `\n\nOriginal error: ${error.message}`
+      );
+    }
+    throw error;
+  }
+  throw error;
+}
 
 export const auth = getAuth(app);
 export const db = getFirestore(app);

@@ -6,7 +6,16 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
-    open: true
+    open: true,
+    proxy: {
+      // Proxy para ajudar com problemas de CORS do Firebase
+      '/firebase': {
+        target: 'https://firestore.googleapis.com',
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/firebase/, '')
+      }
+    }
   },
   build: {
     outDir: 'dist',
