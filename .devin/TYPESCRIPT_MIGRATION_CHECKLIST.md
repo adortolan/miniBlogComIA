@@ -90,12 +90,12 @@ Use este checklist para acompanhar o progresso da migração.
 - [ ] Commit realizado
 
 ### FASE 9: Arquivos Principais
-- [ ] `src/main.jsx` → `main.tsx`
-- [ ] `src/App.jsx` → `App.tsx`
-- [ ] `index.html` atualizado
-- [ ] Type-check passando
-- [ ] Dev server funcionando
-- [ ] Commit realizado
+- [x] `src/main.jsx` → `main.tsx`
+- [x] `src/App.jsx` → `App.tsx`
+- [x] `index.html` atualizado
+- [x] Type-check passando
+- [x] Dev server funcionando
+- [x] Commit realizado
 
 ### FASE 10: Testes
 - [ ] `src/test/setup.js` → `setup.ts`
@@ -189,8 +189,8 @@ Espaço para anotações durante o processo de migração.
 | **TOTAL** | **12-16 horas** | | |
 
 ## Status Atual
-- **FASE 8 (Pages)**: Concluída em 2026-05-20
-  - 8 pages migradas para TypeScript
-  - 7 testes migrados para TypeScript
-  - Lint e testes passando
-  - Commit realizado na branch feature/ts-phase-8-pages
+- **FASE 9 (Arquivos Principais)**: Concluída em 2026-05-21
+  - main.jsx e App.jsx migrados para TypeScript
+  - index.html atualizado para apontar para main.tsx
+  - Type-check, lint, testes e build passando
+  - Commit realizado na branch develop
