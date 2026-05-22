@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../config/firebase';
+import { logger } from '../utils/logger';
 
 type UserRole = 'admin' | 'reader' | 'writer';
 
@@ -36,7 +37,7 @@ export const useUserRole = (userId: string | null) => {
           setRole('reader');
         }
       } catch (err) {
-        console.error('Erro ao buscar role do usuário:', err);
+        logger.error('Erro ao buscar role do usuário:', err);
         const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido ao buscar role do usuário';
         setError(errorMessage);
         setRole('reader');

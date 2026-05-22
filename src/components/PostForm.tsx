@@ -1,4 +1,5 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { validateImageUrl } from '../utils/imageValidation';
 import type { CreatePostDTO, UpdatePostDTO, Post } from '../types';
 
 interface PostFormProps {
@@ -50,14 +51,9 @@ export const PostForm = ({ onSubmit, loading = false, initialData }: PostFormPro
     }
   }, [initialData]);
 
-  const validateURL = (url: string): boolean => {
-    if (!url) return true;
-    try {
-      new URL(url);
-      return true;
-    } catch {
-      return false;
-    }
+  const validateURL = (url: string): { isValid: boolean; error?: string } => {
+    if (!url) return { isValid: true };
+    return validateImageUrl(url);
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -68,7 +64,11 @@ export const PostForm = ({ onSubmit, loading = false, initialData }: PostFormPro
     }));
 
     if (name === 'imageURL') {
-      setShowPreview(validateURL(value) && value.length > 0);
+      const validation = validateURL(value);
+      setShowPreview(validation.isValid && value.length > 0);
+      if (!validation.isValid && value.length > 0) {
+        setErrors((prev) => ({ ...prev, imageURL: validation.error }));
+      }
     }
 
     if (errors[name as keyof FormErrors]) {
@@ -90,8 +90,11 @@ export const PostForm = ({ onSubmit, loading = false, initialData }: PostFormPro
       newErrors.content = 'Conteúdo é obrigatório';
     }
 
-    if (formData.imageURL && !validateURL(formData.imageURL)) {
-      newErrors.imageURL = 'URL inválida';
+    if (formData.imageURL) {
+      const imageValidation = validateURL(formData.imageURL);
+      if (!imageValidation.isValid) {
+        newErrors.imageURL = imageValidation.error || 'URL inválida';
+      }
     }
 
     setErrors(newErrors);
@@ -199,6 +202,9 @@ export const PostForm = ({ onSubmit, loading = false, initialData }: PostFormPro
           placeholder="https://exemplo.com/imagem.jpg"
         />
         {errors.imageURL && <p className="mt-1 text-sm text-red-400">{errors.imageURL}</p>}
+        <p className="mt-1 text-xs text-gray-500">
+          Domínios permitidos: Unsplash, Imgur, Firebase Storage, GitHub, Cloudinary
+        </p>
 
         {showPreview && formData.imageURL && (
           <div className="mt-4">

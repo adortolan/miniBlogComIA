@@ -82,7 +82,7 @@ describe('Register Page', () => {
     expect(mockRegister).not.toHaveBeenCalled();
   });
 
-  it('deve validar senha mínima de 6 caracteres', async () => {
+  it('deve validar senha mínima de 8 caracteres', async () => {
     renderRegister();
 
     const nameInput = screen.getByLabelText(/nome/i);
@@ -92,11 +92,13 @@ describe('Register Page', () => {
 
     fireEvent.change(nameInput, { target: { value: 'Test User' } });
     fireEvent.change(emailInput, { target: { value: 'test@test.com' } });
-    fireEvent.change(passwordInput, { target: { value: '12345' } });
+    fireEvent.change(passwordInput, { target: { value: 'Abc1' } }); // Muito curta
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText(/senha deve ter no mínimo 6 caracteres/i)).toBeInTheDocument();
+      // Verifica que há pelo menos um elemento com a mensagem de erro
+      const errorMessages = screen.getAllByText(/senha deve ter no mínimo 8 caracteres/i);
+      expect(errorMessages.length).toBeGreaterThan(0);
     });
 
     expect(mockRegister).not.toHaveBeenCalled();
@@ -113,8 +115,8 @@ describe('Register Page', () => {
 
     fireEvent.change(nameInput, { target: { value: 'Test User' } });
     fireEvent.change(emailInput, { target: { value: 'test@test.com' } });
-    fireEvent.change(passwordInput, { target: { value: 'password123' } });
-    fireEvent.change(confirmPasswordInput, { target: { value: 'different' } });
+    fireEvent.change(passwordInput, { target: { value: 'Password123' } }); // Senha forte
+    fireEvent.change(confirmPasswordInput, { target: { value: 'Different123' } }); // Diferente
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -136,15 +138,15 @@ describe('Register Page', () => {
 
     fireEvent.change(nameInput, { target: { value: 'Test User' } });
     fireEvent.change(emailInput, { target: { value: 'test@test.com' } });
-    fireEvent.change(passwordInput, { target: { value: 'password123' } });
-    fireEvent.change(confirmPasswordInput, { target: { value: 'password123' } });
+    fireEvent.change(passwordInput, { target: { value: 'Password123' } }); // Senha forte
+    fireEvent.change(confirmPasswordInput, { target: { value: 'Password123' } });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
       expect(mockRegister).toHaveBeenCalledWith(
         'Test User',
         'test@test.com',
-        'password123'
+        'Password123'
       );
     });
 

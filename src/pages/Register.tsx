@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthContext } from '../contexts/AuthContext';
 import { useRegister } from '../hooks/useRegister';
+import { validatePassword, getPasswordRequirementsMessage } from '../utils/passwordValidation';
 import type { FormEvent } from 'react';
 
 const Register = () => {
@@ -46,8 +47,9 @@ const Register = () => {
       return false;
     }
 
-    if (password.length < 6) {
-      setValidationError('Senha deve ter no mínimo 6 caracteres');
+    const passwordValidation = validatePassword(password);
+    if (!passwordValidation.isValid) {
+      setValidationError(passwordValidation.errors[0]);
       return false;
     }
 
@@ -142,6 +144,9 @@ const Register = () => {
                 className="mt-1 block w-full px-3 py-2 bg-dark-800 border border-dark-600 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent"
                 placeholder="••••••••"
               />
+              <p className="mt-1 text-xs text-gray-500">
+                {getPasswordRequirementsMessage()}
+              </p>
             </div>
 
             <div>

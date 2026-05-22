@@ -5,6 +5,7 @@ import { useUpdatePost } from '../hooks/useUpdatePost';
 import { useUserRole } from '../hooks/useUserRole';
 import { postService } from '../services/postService';
 import { PostForm } from '../components/PostForm';
+import { logger } from '../utils/logger';
 import type { Post, CreatePostDTO, UpdatePostDTO } from '../types';
 
 /**
@@ -43,7 +44,7 @@ export const EditPost = () => {
         }
       } catch (err) {
         setError('Erro ao carregar post');
-        console.error('Erro ao buscar post:', err);
+        logger.error('Erro ao buscar post:', err);
       } finally {
         setLoading(false);
       }
@@ -70,7 +71,7 @@ export const EditPost = () => {
       });
       navigate(`/posts/${updatedPost.slug}`);
     } catch (err) {
-      console.error('Erro ao atualizar post:', err);
+      logger.error('Erro ao atualizar post:', err);
     }
   };
 
