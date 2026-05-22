@@ -78,7 +78,7 @@ describe('CreatePost', () => {
     fireEvent.change(titleInput, { target: { value: 'Meu Post' } });
     fireEvent.change(contentInput, { target: { value: 'Conteúdo' } });
     fireEvent.change(tagsInput, { target: { value: 'react' } });
-    fireEvent.change(imageInput, { target: { value: 'https://example.com/image.jpg' } });
+    fireEvent.change(imageInput, { target: { value: 'https://images.unsplash.com/photo-test.jpg' } }); // Domínio permitido
 
     const submitButton = screen.getByRole('button', { name: /publicar post/i });
     fireEvent.click(submitButton);

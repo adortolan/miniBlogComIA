@@ -6,6 +6,8 @@ import {
 } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
+import { logger } from '../utils/logger';
+import { validatePassword } from '../utils/passwordValidation';
 
 interface RegisterResult {
   success: boolean;
@@ -31,8 +33,9 @@ export const useRegister = () => {
       return { success: false, error: validationError.message };
     }
 
-    if (password.length < 6) {
-      const validationError = new Error('Senha muito fraca. Use no mínimo 6 caracteres');
+    const passwordValidation = validatePassword(password);
+    if (!passwordValidation.isValid) {
+      const validationError = new Error(passwordValidation.errors[0]);
       setError(validationError.message);
       return { success: false, error: validationError.message };
     }
@@ -61,11 +64,11 @@ export const useRegister = () => {
 
         return { success: true };
       } catch (profileError) {
-        console.error('Erro ao criar perfil:', profileError);
+        logger.error('Erro ao criar perfil:', profileError);
         try {
           await user.delete();
         } catch (deleteError) {
-          console.error('Erro ao deletar usuário:', deleteError);
+          logger.error('Erro ao deletar usuário:', deleteError);
         }
         throw profileError;
       }

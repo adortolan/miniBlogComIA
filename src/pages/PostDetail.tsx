@@ -6,6 +6,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useDeletePost } from '../hooks/useDeletePost';
 import { useUserRole } from '../hooks/useUserRole';
 import { formatDate } from '../utils/formatDate';
+import { logger } from '../utils/logger';
 import { DeleteConfirmModal } from '../components/DeleteConfirmModal';
 import type { Post } from '../types';
 
@@ -40,7 +41,7 @@ export const PostDetail = () => {
         }
       } catch (err) {
         setError('Erro ao carregar post');
-        console.error('Erro ao buscar post:', err);
+        logger.error('Erro ao buscar post:', err);
       } finally {
         setLoading(false);
       }
@@ -67,7 +68,7 @@ export const PostDetail = () => {
       await deletePost(post!.id);
       navigate('/');
     } catch (err) {
-      console.error('Erro ao excluir post:', err);
+      logger.error('Erro ao excluir post:', err);
       setShowDeleteModal(false);
     }
   };

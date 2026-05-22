@@ -49,7 +49,7 @@ describe('useRegister', () => {
       registerResult = await result.current.register(
         'Test User',
         'test@test.com',
-        'password123'
+        'Password123' // Senha forte: 8+ chars, maiúscula, minúscula, número
       );
     });
 
@@ -71,7 +71,7 @@ describe('useRegister', () => {
       registerResult = await result.current.register(
         'Test User',
         'existing@test.com',
-        'password123'
+        'Password123' // Senha forte para passar validação local
       );
     });
 
@@ -80,9 +80,7 @@ describe('useRegister', () => {
     expect(result.current.error).toBe('Email já está em uso');
   });
 
-  it('deve retornar erro para senha fraca', async () => {
-    mockCreateUserWithEmailAndPassword.mockRejectedValue({ code: 'auth/weak-password' });
-
+  it('deve retornar erro para senha fraca (muito curta)', async () => {
     const { result } = renderHook(() => useRegister());
 
     let registerResult;
@@ -90,12 +88,28 @@ describe('useRegister', () => {
       registerResult = await result.current.register(
         'Test User',
         'test@test.com',
-        '123'
+        '123' // Senha muito curta
       );
     });
 
     expect(registerResult!.success).toBe(false);
-    expect(registerResult!.error).toBe('Senha muito fraca. Use no mínimo 6 caracteres');
+    expect(registerResult!.error).toBe('Senha deve ter no mínimo 8 caracteres');
+  });
+
+  it('deve retornar erro para senha sem maiúscula', async () => {
+    const { result } = renderHook(() => useRegister());
+
+    let registerResult;
+    await act(async () => {
+      registerResult = await result.current.register(
+        'Test User',
+        'test@test.com',
+        'password123' // Sem letra maiúscula
+      );
+    });
+
+    expect(registerResult!.success).toBe(false);
+    expect(registerResult!.error).toBe('Senha deve conter pelo menos uma letra maiúscula');
   });
 
   it('deve retornar erro para email inválido', async () => {
@@ -108,7 +122,7 @@ describe('useRegister', () => {
       registerResult = await result.current.register(
         'Test User',
         'invalid-email',
-        'password123'
+        'Password123' // Senha forte para passar validação local
       );
     });
 
@@ -121,7 +135,7 @@ describe('useRegister', () => {
 
     let registerResult;
     await act(async () => {
-      registerResult = await result.current.register('', 'test@test.com', 'password123');
+      registerResult = await result.current.register('', 'test@test.com', 'Password123');
     });
 
     expect(registerResult!.success).toBe(false);
@@ -133,11 +147,11 @@ describe('useRegister', () => {
 
     let registerResult;
     await act(async () => {
-      registerResult = await result.current.register('Test User', 'test@test.com', '123');
+      registerResult = await result.current.register('Test User', 'test@test.com', 'Abc1'); // Muito curta
     });
 
     expect(registerResult!.success).toBe(false);
-    expect(registerResult!.error).toBe('Senha muito fraca. Use no mínimo 6 caracteres');
+    expect(registerResult!.error).toBe('Senha deve ter no mínimo 8 caracteres');
   });
 
   it('deve deletar usuário quando falha criação do perfil', async () => {
@@ -154,7 +168,7 @@ describe('useRegister', () => {
 
     await act(async () => {
       try {
-        await result.current.register('Test User', 'test@test.com', 'password123');
+        await result.current.register('Test User', 'test@test.com', 'Password123');
       } catch {
         // Erro esperado
       }
@@ -173,7 +187,7 @@ describe('useRegister', () => {
     const { result } = renderHook(() => useRegister());
 
     act(() => {
-      result.current.register('Test User', 'test@test.com', 'password123');
+      result.current.register('Test User', 'test@test.com', 'Password123');
     });
 
     expect(result.current.loading).toBe(true);
@@ -190,7 +204,7 @@ describe('useRegister', () => {
 
     await act(async () => {
       try {
-        await result.current.register('Test User', 'existing@test.com', 'password123');
+        await result.current.register('Test User', 'existing@test.com', 'Password123');
       } catch {
         // Primeiro erro esperado
       }
@@ -199,7 +213,7 @@ describe('useRegister', () => {
     expect(result.current.error).toBeTruthy();
 
     await act(async () => {
-      await result.current.register('Test User', 'new@test.com', 'password123');
+      await result.current.register('Test User', 'new@test.com', 'Password123');
     });
 
     await waitFor(() => {

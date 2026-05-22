@@ -44,7 +44,7 @@ describe('PostForm', () => {
       target: { value: 'react, javascript' },
     });
     fireEvent.change(screen.getByLabelText(/url da imagem/i), {
-      target: { value: 'https://example.com/image.jpg' },
+      target: { value: 'https://images.unsplash.com/photo-test.jpg' }, // Domínio permitido
     });
 
     const submitButton = screen.getByRole('button', { name: /publicar/i });
@@ -55,7 +55,7 @@ describe('PostForm', () => {
         title: 'Meu Post',
         content: '# Conteúdo do post',
         tags: ['react', 'javascript'],
-        imageURL: 'https://example.com/image.jpg',
+        imageURL: 'https://images.unsplash.com/photo-test.jpg',
       });
     });
   });
@@ -65,13 +65,13 @@ describe('PostForm', () => {
 
     const imageInput = screen.getByLabelText(/url da imagem/i);
     fireEvent.change(imageInput, {
-      target: { value: 'https://example.com/image.jpg' },
+      target: { value: 'https://images.unsplash.com/photo-test.jpg' }, // Domínio permitido
     });
 
     await waitFor(() => {
       const preview = screen.getByAltText(/preview/i);
       expect(preview).toBeInTheDocument();
-      expect(preview).toHaveAttribute('src', 'https://example.com/image.jpg');
+      expect(preview).toHaveAttribute('src', 'https://images.unsplash.com/photo-test.jpg');
     });
   });
 
@@ -95,7 +95,7 @@ describe('PostForm', () => {
       title: 'Post Existente',
       content: 'Conteúdo existente',
       tags: ['react', 'typescript'],
-      imageURL: 'https://example.com/existing.jpg',
+      imageURL: 'https://images.unsplash.com/existing.jpg', // Domínio permitido
     };
 
     render(<PostForm {...defaultProps} initialData={initialData} />);
@@ -104,7 +104,7 @@ describe('PostForm', () => {
     expect(screen.getByLabelText(/conteúdo/i)).toHaveValue('Conteúdo existente');
     expect(screen.getByLabelText(/tags/i)).toHaveValue('react, typescript');
     expect(screen.getByLabelText(/url da imagem/i)).toHaveValue(
-      'https://example.com/existing.jpg'
+      'https://images.unsplash.com/existing.jpg'
     );
   });
 

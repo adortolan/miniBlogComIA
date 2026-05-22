@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useCreatePost } from '../hooks/useCreatePost';
 import { PostForm } from '../components/PostForm';
+import { logger } from '../utils/logger';
 import type { CreatePostDTO, UpdatePostDTO } from '../types';
 
 /**
@@ -25,7 +26,7 @@ export const CreatePost = () => {
       const createdPost = await createPost(postData as CreatePostDTO);
       navigate(`/posts/${createdPost.slug}`);
     } catch (err) {
-      console.error('Erro ao criar post:', err);
+      logger.error('Erro ao criar post:', err);
     }
   };
 

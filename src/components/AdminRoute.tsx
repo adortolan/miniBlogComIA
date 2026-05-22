@@ -3,6 +3,7 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
 import { useAuthContext } from '../contexts/AuthContext';
 import { db } from '../config/firebase';
+import { logger } from '../utils/logger';
 
 const AdminRoute = () => {
   const { isAuthenticated, loading: authLoading, user } = useAuthContext();
@@ -27,7 +28,7 @@ const AdminRoute = () => {
           setIsAdmin(false);
         }
       } catch (error) {
-        console.error('Erro ao verificar role do usuário:', error);
+        logger.error('Erro ao verificar role do usuário:', error);
         setIsAdmin(false);
       } finally {
         setCheckingRole(false);

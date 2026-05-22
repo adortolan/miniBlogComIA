@@ -13,6 +13,7 @@ import {
   onSnapshot,
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
+import { logger } from '../utils/logger';
 import type {
   Post,
   CreatePostDTO,
@@ -48,13 +49,13 @@ export const postService: PostService = {
         ...postData,
       };
     } catch (error: unknown) {
-      console.error('Erro ao criar post:', error);
+      logger.error('Erro ao criar post:', error);
       
       // Type guard para Firebase errors
       if (error && typeof error === 'object' && 'code' in error && 'message' in error) {
         const firebaseError = error as { code?: string; message?: string };
-        console.error('Error code:', firebaseError.code);
-        console.error('Error message:', firebaseError.message);
+        logger.error('Error code:', firebaseError.code);
+        logger.error('Error message:', firebaseError.message);
 
         if (firebaseError.code === 'permission-denied') {
           throw new Error('Você não tem permissão para criar posts. Verifique se está autenticado.');
@@ -116,13 +117,13 @@ export const postService: PostService = {
           callback(posts);
         },
         (error: unknown) => {
-          console.error('Erro na subscription de posts:', error);
+          logger.error('Erro na subscription de posts:', error);
           
           // Type guard para Firebase errors
           if (error && typeof error === 'object' && 'code' in error && 'message' in error) {
             const firebaseError = error as { code?: string; message?: string };
-            console.error('Error code:', firebaseError.code);
-            console.error('Error message:', firebaseError.message);
+            logger.error('Error code:', firebaseError.code);
+            logger.error('Error message:', firebaseError.message);
 
             // Handle various Firebase/CORS errors
             if (firebaseError.code === 'permission-denied') {
@@ -148,7 +149,7 @@ export const postService: PostService = {
         }
       );
     } catch (error: unknown) {
-      console.error('Erro ao configurar subscription de posts:', error);
+      logger.error('Erro ao configurar subscription de posts:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       const initError = new Error('Erro ao inicializar conexão com o Firebase: ' + errorMessage);
       if (errorCallback) {
